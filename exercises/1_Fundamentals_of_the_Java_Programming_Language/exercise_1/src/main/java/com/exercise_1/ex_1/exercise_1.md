@@ -1,6 +1,9 @@
 ## Exercise 1
 
 Write a code that receives someone's name and year of birth and prints the following message on the screen: "Hello 'Name', you are 'X' years old".
+
+Personal note: Here I took the liberty of improving the base code from the exercise, adding more validations by the use of the separation of concerns principle, personalized messages, and somewhat more interative than a simple input/output code.
+
 You can find the code for this exercise [here](ex_1.java).
 
 ## Personal note
