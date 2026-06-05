@@ -4,6 +4,10 @@ This repository contains my projects, exercises, challenges, and practical imple
 
 The bootcamp is focused on modern backend development, software engineering fundamentals, cloud-ready applications, and real-world project building using the Java ecosystem.
 
+Use the navigation links above to explore the various exercises, projects, and learning materials that I have worked on during this bootcamp. Each section contains detailed explanations, code samples, and insights into the concepts covered in the program.
+
+- Whole list of the [exercises](exercises\1_Fundamentals_of_the_Java_Programming_Language\exercise_list\src\main\java\com\exercises\Readme.md) presented during the Santander Bootcamp 2026, plus personal improvements.
+
 ## Technologies & Concepts Covered
 
 - AI-Assisted Development Workflows

@@ -1,4 +1,4 @@
-package com.exercise_1.ex_3;
+package com.exercises.ex_3;
 import java.util.Scanner;
 
 public class ex_3 {
@@ -93,8 +93,6 @@ public class ex_3 {
         } catch (Exception e) {
             System.out.println("What went wrong: " + e.getMessage());
             return -1; // Return an error value
-        }finally {
-            scanner.close();
         }
     }
 }

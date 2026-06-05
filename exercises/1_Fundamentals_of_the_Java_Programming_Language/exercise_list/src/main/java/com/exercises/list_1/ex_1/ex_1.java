@@ -1,6 +1,6 @@
-package com.exercise_1.ex_1;
-import java.util.Scanner;
+package com.exercises.ex_1;
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class ex_1 {
     private Scanner scanner = new Scanner(System.in);
@@ -119,8 +119,6 @@ public class ex_1 {
             System.out.println("Something went wrong. \nPlease try to run the program again. Bye!");
             System.exit(0);
             return null;
-        }finally {
-            scanner.close();
         }
         
     }

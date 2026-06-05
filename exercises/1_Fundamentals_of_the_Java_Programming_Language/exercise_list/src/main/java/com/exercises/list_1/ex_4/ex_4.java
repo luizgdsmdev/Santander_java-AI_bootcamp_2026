@@ -1,4 +1,4 @@
-package com.exercise_1.ex_4;
+package com.exercises.ex_4;
 import java.util.Scanner;
 
 public class ex_4 {

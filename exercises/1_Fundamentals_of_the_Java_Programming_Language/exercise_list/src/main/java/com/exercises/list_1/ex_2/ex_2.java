@@ -1,4 +1,4 @@
-package com.exercise_1.ex_2;
+package com.exercises.ex_2;
 
 import java.util.Scanner;
 
@@ -70,8 +70,6 @@ public class ex_2 {
             System.out.println("Something went wrong. Please try to run the program again.");
             System.exit(0);
             return -1; // Return an error value
-        }finally {
-            scanner.close();
         }
     }
 }
