@@ -5,7 +5,7 @@ Above a list of exercises to practice the concepts learned in the "Control Struc
 - Personal note: Here I took the liberty of improving the base code from the exercise, adding more validations by the use of the separation of concerns principle, personalized messages, error handling, and somewhat more interactive than a simple input/output code.
 - The original file can be found [here](https://github.com/digitalinnovationone/exercicios-java-basico/blob/main/exercicios/2%20-%20Estruturas%20de%20Controle%20em%20Java.MD)
 
-Get back to the [complete listing](https://github.com/luizgdsmdev/Santander_java-AI_bootcamp_2026/blob/3ff7c5e8387b41287eadfefb03b6cbf3b47c4d11/exercises/1_Fundamentals_of_the_Java_Programming_Language/Readme.md) of exercises for the "Fundamentals of the Java Programming Language" module.
+Get back to the [complete listing](../Readme.md) of exercises for the "Fundamentals of the Java Programming Language" module.
 
 ### Exercise 1
 

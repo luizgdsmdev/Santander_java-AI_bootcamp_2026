@@ -4,15 +4,17 @@ The exercises in this module are design to practice the Santander Bootcamp 2026,
 
 The original repository file can be found [here](https://github.com/digitalinnovationone/exercicios-java-basico/tree/main/exercicios).
 
+Get back to the [project description](../../../../../../../../Readme.md) of exercises for the "Fundamentals of the Java Programming Language" module.
+
 ### List of exercise 1
 
 A list of 4 exercises to practice the concepts learned in the "Fundamentals of the Java Programming Language" module, which include gethering user input, performing basic calculations, flow control, validations, error handling and displaying output on the screen.
-Link to complete list: [exercise_1](list_1\Readme.md)
+Link to complete list: [exercise_1](list_1/Readme.md)
 
 ### List of exercise 2
 
 A set of 4 Java exercises focused on strengthening programming skills, covering topics such as user interaction through the console, variable manipulation, arithmetic expressions, decision-making structures, repetition structures, input validation, and algorithm development. The proposed challenges encourage the application of Java fundamentals to solve real-world mathematical and logical problems.
-Link to complete list: [exercise_2](list_2\Readme.md)
+Link to complete list: [exercise_2](list_2/Readme.md)
 
 <!-- ### Exercise 3
 
