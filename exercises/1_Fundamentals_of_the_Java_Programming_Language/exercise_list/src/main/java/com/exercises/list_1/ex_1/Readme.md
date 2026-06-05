@@ -4,6 +4,8 @@ Write a code that receives someone's name and year of birth and prints the follo
 
 You can find the code for this exercise [here](ex_1.java).
 
+Get back to the [Exercise list 1](../Readme.md) for the "Fundamentals of the Java Programming Language" module.
+
 ## Personal note
 
 Here I took the liberty of improving the base code from the exercise, adding more validations by the use of the separation of concerns principle, personalized messages, and somewhat more interative than a simple input/output code.

@@ -1,4 +1,4 @@
-## Exercises
+## Exercises: list 2
 
 Above a list of exercises to practice the concepts learned in the "Control Structures in Java" module.
 

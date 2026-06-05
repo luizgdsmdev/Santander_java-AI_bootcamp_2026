@@ -4,6 +4,8 @@ Write a code that receives the base and height of a rectangle, calculates its ar
 
 You can find the code for this exercise [here](ex_3.java).
 
+Get back to the [Exercise list 1](../Readme.md) for the "Fundamentals of the Java Programming Language" module.
+
 ## How it works
 
 The code is structured in two classes: `Main` and `ex_3`. The `Main` class is responsible for executing the program, while the `ex_3` class contains the logic to receive the user's number, validate it, and print the Fibonacci series.
