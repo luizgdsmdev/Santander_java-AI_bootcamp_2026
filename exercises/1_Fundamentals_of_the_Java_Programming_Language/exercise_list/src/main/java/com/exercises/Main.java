@@ -5,8 +5,7 @@ import com.exercises.ex_1.ex_1;
 import com.exercises.ex_2.ex_2;
 import com.exercises.ex_3.ex_3;
 import com.exercises.ex_4.ex_4;
-
-import main.java.com.exercises.list_2.ex_1.ls2_ex_1;
+import com.exercises.list_2.ex_1.ex_5;
 
 public class Main {
 
@@ -120,8 +119,8 @@ public class Main {
                         // Exercise 1
                         isRunning = true;
                         
-                        ls2_ex_1 exercise_1 = new ls2_ex_1();
-                        exercise_1.main(null);
+                        ex_5 ex_5 = new ex_5();
+                        ex_5.ex_5_multiplicationTable();
                         printSeparationLine();
                         
                         exerciseListTwo();// Return to the main menu of the exercise list 2
