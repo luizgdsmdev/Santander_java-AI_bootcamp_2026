@@ -4,7 +4,7 @@ The exercises in this module are design to practice the Santander Bootcamp 2026,
 
 The original repository file can be found [here](https://github.com/digitalinnovationone/exercicios-java-basico/tree/main/exercicios).
 
-Get back to the [project description](../../../../../../../../README.md) of exercises for the "Fundamentals of the Java Programming Language" module.
+Get back to the [project description](../../../../../../../../README.md).
 
 ### List of exercise 1
 

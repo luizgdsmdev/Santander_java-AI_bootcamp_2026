@@ -100,7 +100,6 @@ public class Main {
         }while(!isRunning);
     }
         
-    
     private static void exerciseListTwo(){
         System.out.println("\nWelcome to the Exercise List 2! \nType 'exit' at any moment to close the program.");
         System.out.println("Let's start with the options! Please, select the exercise you want to run: \n0 - Return to the main menu \n1 - Fisrt name and last name \nExit - Close the program\n");
