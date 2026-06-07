@@ -101,7 +101,7 @@ public class Main {
         
     private static void exerciseListTwo(){
         System.out.println("\nWelcome to the Exercise List 2! \nType 'exit' at any moment to close the program.");
-        System.out.println("Let's start with the options! Please, select the exercise you want to run: \n0 - Return to the main menu \n1 - Fisrt name and last name \nExit - Close the program\n");
+        System.out.println("Let's start with the options! Please, select the exercise you want to run: \n0 - Return to the main menu \n1 - Multiplication table \nExit - Close the program\n");
         boolean isRunning = false;
         
         do{
@@ -126,14 +126,14 @@ public class Main {
                         exerciseListTwo();// Return to the main menu of the exercise list 2
 
                     } else {
-                        System.out.println("\nPlease, review the options: \n0 - Return to the main menu \n1 - Fisrt name and last name \nExit - Close the program\n");
+                        System.err.println("\nPlease, review the options: \n0 - Return to the main menu \n1 - Multiplication table \nExit - Close the program\n");
                     }
                 
                 } else {
-                    System.out.println("\nPlease, review the options: \n0 - Return to the main menu \n1 - Fisrt name and last name \nExit - Close the program\n");
+                    System.err.println("\nPlease, review the options: \n0 - Return to the main menu \n1 - Multiplication table \nExit - Close the program\n");
                 }
         } catch (Exception e) {
-            System.out.println("Something went wrong. Please try to run the program again.");
+            System.err.println("Something went wrong. Please try to run the program again.");
             System.exit(0);
         }
 
@@ -145,7 +145,7 @@ public class Main {
             String input = scanner.nextLine();
             return input.trim();
         }catch(Exception e){
-            System.out.println("Something went wrong while getting your response. Please try to run the program again.");
+            System.err.println("Something went wrong while getting your response. Please try to run the program again.");
             System.exit(0);
         }
         return null;
@@ -163,14 +163,14 @@ public class Main {
             int valueParsed = Integer.parseInt(userInput);
             return valueParsed;
         }catch(Exception e){
-            System.out.println("\nSomething went wrong with your response. Please, review the open options. \n");
+            System.err.println("\nSomething went wrong with your response. Please, review the open options. \n");
             return -1;
         }
     }
 
     private static boolean isNotEmptyInput(String userInput){
         if(userInput == null || userInput.trim().isEmpty()){
-            System.out.println("The value must not be empty, please try again.\n");
+            System.err.println("The value must not be empty, please try again.\n");
             return false;
         }
         return true;

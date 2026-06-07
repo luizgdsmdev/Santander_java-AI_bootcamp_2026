@@ -4,6 +4,8 @@ Above a list of exercises to practice the concepts learned in the "Control Struc
 
 - Personal note: Here I took the liberty of improving the base code from the exercise, adding more validations by the use of the separation of concerns principle, personalized messages, error handling, and somewhat more interactive than a simple input/output code.
 - The original file can be found [here](https://github.com/digitalinnovationone/exercicios-java-basico/blob/main/exercicios/2%20-%20Estruturas%20de%20Controle%20em%20Java.MD)
+- Warning 1: For this series of exercises, I decided to implement a more robust input validation system, which result in a more complex code structure than the original exercises. This is intended to provide a more comprehensive learning experience, but it may require additional effort to understand the code. If you prefer a simpler implementation, feel free to refer to the original exercises or modify the code as needed.
+- Warning 2: The second list doen't work on and "infinty" loop for the options menu, like the first list. This happens due to the "throw new IllegalArgumentException" used, in a atempt to bring more robustness and practice with error handling. If you want to make it work on an infinity loop, you can replace the "throw new IllegalArgumentException" with a simple "System.err.println" and a "continue" statement, to keep the user in the options menu until they choose to exit.
 
 Get back to the [complete listing](../Readme.md) of exercises for the "Fundamentals of the Java Programming Language" module.
 
