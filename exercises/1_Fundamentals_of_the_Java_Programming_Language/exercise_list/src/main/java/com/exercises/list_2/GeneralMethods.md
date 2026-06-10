@@ -238,3 +238,16 @@ This method takes a string input and checks if it starts with a hyphen (-). It r
         return input.trim().startsWith("-");
     }
 ```
+
+#### isExit(String input)
+
+This method takes a string input and checks if it is equal to "exit". If it is, it prints a message indicating that the program is exiting and then exits the program.
+
+```java
+    public void isExit(String input){
+        if(input.trim().equalsIgnoreCase("exit")){
+            System.out.println("Exiting the program. Goodbye!");
+            System.exit(0);
+        }
+    }
+```

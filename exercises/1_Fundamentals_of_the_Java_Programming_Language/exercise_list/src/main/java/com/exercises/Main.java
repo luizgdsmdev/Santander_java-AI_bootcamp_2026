@@ -9,6 +9,7 @@ import com.exercises.list_2.ex_1.ex_5;
 import com.exercises.list_2.ex_6.ex_6;
 
 import main.java.com.exercises.list_2.ex_3.ex_7;
+import main.java.com.exercises.list_2.ex_4.ex_8;
 
 public class Main {
 
@@ -104,7 +105,7 @@ public class Main {
         
     private static void exerciseListTwo(){
         System.out.println("\nWelcome to the Exercise List 2! \nType 'exit' at any moment to close the program.");
-        System.out.println("Let's start with the options! Please, select the exercise you want to run: \n0 - Return to the main menu \n1 - Multiplication table \n2 - BMI calculation \n3 - Even or Odd \nExit - Close the program\n");
+        System.out.println("Let's start with the options! Please, select the exercise you want to run: \n0 - Return to the main menu \n1 - Multiplication table \n2 - BMI calculation \n3 - Even or Odd \n4 - Remainder other than 0 \nExit - Close the program\n");
         boolean isRunning = false;
         
         do{
@@ -148,12 +149,22 @@ public class Main {
                         
                         exerciseListTwo();// Return to the main menu of the exercise list 2
 
+                    }else if(exerciseSelected == 4){
+                        // Exercise 4
+                        isRunning = true;
+                        
+                        ex_8 ex_8 = new ex_8();
+                        ex_8.ex_8_remainderOtherThan_0();
+                        printSeparationLine();
+                        
+                        exerciseListTwo();// Return to the main menu of the exercise list 2
+
                     }else {
-                        System.err.println("\nPlease, review the options: \n0 - Return to the main menu \n1 - Multiplication table \n2 - BMI calculation \n3 - Even or Odd \nExit - Close the program\n");
+                        System.err.println("\nPlease, review the options: \n0 - Return to the main menu \n1 - Multiplication table \n2 - BMI calculation \n3 - Even or Odd \n4 - Remainder other than 0 \nExit - Close the program\n");
                     }
                 
                 } else {
-                    System.err.println("\nPlease, review the options: \n0 - Return to the main menu \n1 - Multiplication table \n2 - BMI calculation \n3 - Even or Odd \nExit - Close the program\n");
+                    System.err.println("\nPlease, review the options: \n0 - Return to the main menu \n1 - Multiplication table \n2 - BMI calculation \n3 - Even or Odd \n4 - Remainder other than 0 \nExit - Close the program\n");
                 }
         } catch (Exception e) {
             System.err.println("Something went wrong. Please try to run the program again.");

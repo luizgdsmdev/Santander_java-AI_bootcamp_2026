@@ -16,6 +16,7 @@ public class ex_5 extends GeneralMethods {
     public void ex_5_multiplicationTable() {
         System.out.println("\nPlease, enter an integer to see its multiplication table:");
         String userInput = getUserInput();
+        isExit(userInput);
         Object[] validationResult = inputTypeValidation(userInput, "integer");
         
         boolean isValid = (boolean) validationResult[0];

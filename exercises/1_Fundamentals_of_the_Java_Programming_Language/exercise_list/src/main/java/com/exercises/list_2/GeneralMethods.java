@@ -237,4 +237,15 @@ public class GeneralMethods {
         }
     }
 
+    /**
+     * @description This method checks if the input string is "exit". If it is, it prints a message indicating that the program is exiting 
+     * and then exits the program.
+     * @param input The input string to be checked.
+     */
+    public void isExit(String input){
+        if(input.trim().equalsIgnoreCase("exit")){
+            System.out.println("Exiting the program. Goodbye!");
+            System.exit(0);
+        }
+    }
 }

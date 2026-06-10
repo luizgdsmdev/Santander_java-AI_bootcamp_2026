@@ -46,9 +46,11 @@ public class ex_6 extends GeneralMethods{
         try{
             System.out.println("\nPlease, enter your height in cm:");
             String height = getUserInput();
+            isExit(height);
 
             System.out.println("\nPlease, enter your weight in kg:");
             String weight = getUserInput();
+            isExit(weight);
 
             double result = BmiCalculation(height, weight);
             String classification = BmiClassification(result);

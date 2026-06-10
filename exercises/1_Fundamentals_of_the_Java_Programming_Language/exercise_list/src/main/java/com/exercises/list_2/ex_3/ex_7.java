@@ -58,12 +58,15 @@ public class ex_7 extends GeneralMethods {
         try{
             System.out.println("\nPlease, enter a number: \n");
             String fisrtNumber = getUserInput();
+            isExit(fisrtNumber);
 
             System.out.println("\nPlease, enter a number that is bigger than the previous one: \n");
             String secondNumber = getUserInput();
+            isExit(secondNumber);
 
             System.out.println("\nNow, let's choose between 'even' or 'odd': \n");
             String evenOrOdd = getUserInput();
+            isExit(evenOrOdd);
 
             evenOrOdd(fisrtNumber, secondNumber, evenOrOdd);
 
