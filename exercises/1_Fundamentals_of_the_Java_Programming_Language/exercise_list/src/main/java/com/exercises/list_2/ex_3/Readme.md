@@ -6,7 +6,7 @@ Get back to the [listing 2](../Readme.md) of exercises for the "Fundamentals of 
 
 ## How it works
 
-The code is structured in two classes: `Main` and `ex_7`. The `Main` class is responsible for executing the program and to receive he numbers, the "even or odd" option and execute the display. The methods used to do so are located in the [GeneralMethods](../GeneralMethods.md) class, which will be shared across all exercises in this listing, and also in the [ex_7](../ex_7/Readme.md) class.
+The code is structured in two classes: `Main` and `ex_7`. The `Main` class is responsible for executing the program and to receive he numbers, the "even or odd" option and execute the display. The methods used to do so are located in the [GeneralMethods](../GeneralMethods.md) class, which will be shared across all exercises in this listing, and also in the [ex_7](ex_7.java) class.
 
 ### `Main` class
 
