@@ -181,6 +181,15 @@ public class GeneralMethods {
     }
 
     /**
+     * @description This method checks if the input string starts with a negative sign. It is used to determine if the input represents a negative number, 
+     * which can be important for validation purposes in certain contexts.
+     * @param input The input string to be checked.
+     * @return true if the input string starts with a negative sign, indicating it is a negative number; false otherwise.
+     */
+    public boolean isNegative(String input){
+        return input.trim().startsWith("-");
+    }
+    /**
      * @description This method validates user input based on the expected type. It accepts a string input and a string expectedType, 
      * which specifies the expected type of the input. The method attempts to parse the input according to the expected type and returns an 
      * array containing a boolean indicating whether the validation was successful and the parsed value (or null if validation fails).

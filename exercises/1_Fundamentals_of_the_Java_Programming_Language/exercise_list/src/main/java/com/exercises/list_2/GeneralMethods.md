@@ -228,3 +228,13 @@ This method is responsible for reading user input from the console. It uses a Sc
         }
     }
 ```
+
+#### isNegative(String input)
+
+This method takes a string input and checks if it starts with a hyphen (-). It returns true if the input starts with a hyphen, and false otherwise.
+
+```java
+    public boolean isNegative(String input){
+        return input.trim().startsWith("-");
+    }
+```

@@ -27,7 +27,7 @@ Write a code where the user enters their height and weight, their BMI is calcula
 - If it is between 35.0 and 39.9 "Grade II (Severe) Obesity";
 - If it is greater than or equal to 40.0 "Grade III (Morbid) Obesity";
 
-<!-- - Link to code explanation and code file in the [Readme](ex_2/Readme.md) -->
+Link to code explanation and code file in the [Readme](ex_2/Readme.md)
 
 ### Exercise 3
 
