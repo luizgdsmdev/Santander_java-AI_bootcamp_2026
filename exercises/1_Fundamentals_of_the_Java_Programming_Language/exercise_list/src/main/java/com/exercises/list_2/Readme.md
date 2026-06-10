@@ -33,7 +33,7 @@ Link to code explanation and code file in the [Readme](ex_2/Readme.md)
 
 Write a code where the user enters a first number, a second number greater than the first, and chooses between even and odd options; the code should then display all even or odd numbers (according to the initial selection) within the range of numbers entered, including the numbers entered, in descending order.
 
-<!-- - Link to code explanation and code file in the [Readme](ex_3/Readme.md) -->
+- Link to code explanation and code file in the [Readme](ex_3/Readme.md)
 
 ### Exercise 4
 
