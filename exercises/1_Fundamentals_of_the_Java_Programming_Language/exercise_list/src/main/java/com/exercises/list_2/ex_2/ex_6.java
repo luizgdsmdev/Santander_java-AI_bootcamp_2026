@@ -36,7 +36,7 @@ public class ex_6 extends GeneralMethods{
         } else if (bmi >= 35.0 && bmi <= 39.9) {
             return "Grade II (Severe) Obesity";
         } else {
-            return "Obese";
+            return "Grade III (Morbid) Obesity";
         }
     }
     
