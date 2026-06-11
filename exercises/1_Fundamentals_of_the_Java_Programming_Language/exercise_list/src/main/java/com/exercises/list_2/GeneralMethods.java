@@ -243,7 +243,7 @@ public class GeneralMethods {
      * @param input The input string to be checked.
      */
     public void isExit(String input){
-        if(input.trim().equalsIgnoreCase("exit")){
+        if(input.trim().equalsIgnoreCase("exit") || input.trim().equalsIgnoreCase("quit")){
             System.out.println("Exiting the program. Goodbye!");
             System.exit(0);
         }

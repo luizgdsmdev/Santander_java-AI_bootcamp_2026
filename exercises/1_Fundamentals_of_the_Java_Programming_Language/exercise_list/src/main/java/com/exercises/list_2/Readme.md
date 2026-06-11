@@ -39,4 +39,4 @@ Write a code where the user enters a first number, a second number greater than 
 
 Write a code where the user inputs an initial number, then N other numbers. The code execution will continue until the number entered and divided by the first number results in a remainder other than 0. Numbers smaller than the first number should be ignored.
 
-<!-- - Link to code explanation and code file in the [Readme](ex_4/Readme.md) -->
+- Link to code explanation and code file in the [Readme](ex_4/Readme.md)
