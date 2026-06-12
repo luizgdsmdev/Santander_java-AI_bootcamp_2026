@@ -174,6 +174,62 @@ public class GeneralMethods {
         }
     }
 
+    private short parseToShort(String input){
+       if (input == null) {
+            System.err.println("Attempting to convert null String to short.");
+            throw new IllegalArgumentException("Input value cannot be null at parseToShort method.");
+        }
+
+        String trimmed = input.trim();
+
+        if (trimmed.isEmpty()) {
+            System.err.println("Attempting to convert empty string to short.");
+            throw new IllegalArgumentException("Input value cannot be empty at parseToShort method.");
+        }
+
+        try {
+            Object[] result = shortLimitingSize(trimmed);
+            boolean isValid = (Boolean) result[0];
+            if(!isValid){throw new IllegalArgumentException("Input value is out of the allowed range for expected value type.");}
+            return (Short) result[1];
+        } catch (NumberFormatException e) {
+            System.err.println("Failed to convert '" + input + "' to short");
+            throw new IllegalArgumentException(String.format("Invalid value: '%s'. Please enter a valid short.", input), e.getCause());
+        }
+    }
+
+    /**
+     * @description This method checks if the input string exceeds the maximum or minimum limits for an Short. It throws an IllegalArgumentException if the input is out of range.
+     * @param userInput The user input string to be checked for size limits.
+     * @return An object array containing a boolean value and a short value, or throws an exception. The boolean value indicates whether the input is within the allowed range, 
+     * and the short value is the parsed short if valid.
+     */
+   private Object[] shortLimitingSize(String userInput){
+
+        // Avoid trying to parse strings absurdly long
+        if (userInput.length() > 5) {
+            throw new IllegalArgumentException("Number too large. The maximum allowed value is " + Short.MAX_VALUE + ". Try something shorter.");
+        }
+
+        try {
+            short value = Short.parseShort(userInput);
+            return new Object[]{true, value};
+
+        } catch (NumberFormatException e) {
+            try {
+                // Check if it was a size error (out of range for short type)
+                double checkValue = Double.parseDouble(userInput);
+                if (checkValue > Short.MAX_VALUE || checkValue < Short.MIN_VALUE) {
+                    throw new IllegalArgumentException("Number out of range for short. The allowed range is " + Short.MIN_VALUE + " to " + Short.MAX_VALUE + ". Try again.");
+                }
+                throw new IllegalArgumentException("Invalid numeric value.");
+            } catch (NumberFormatException ex) {
+                throw new IllegalArgumentException("Invalid numeric value: " + ex.getMessage());
+            }
+        }
+    }
+
+    
     /**
      * @description This method checks if the input string starts with a negative sign. It is used to determine if the input represents a negative number, 
      * which can be important for validation purposes in certain contexts.
@@ -204,8 +260,11 @@ public class GeneralMethods {
                 case "long":
                         long longValue = parseToLong(input);
                     return new Object[]{true, longValue};
+                case "short":
+                        short shortValue = parseToShort(input);
+                    return new Object[]{true, shortValue};
                 default:
-                    System.err.println("Unsupported type: " + expectedType + ". Supported types are: integer, double, or long. Check inputTypeValidation method.");
+                    System.err.println("Unsupported type: " + expectedType + ". Supported types are: integer, double, long, or short. Check inputTypeValidation method.");
                     return new Object[]{false, null};
             }
         } catch (IllegalArgumentException e) {
