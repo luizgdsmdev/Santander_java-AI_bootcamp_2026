@@ -10,6 +10,7 @@ import com.exercises.list_2.ex_6.ex_6;
 
 import main.java.com.exercises.list_2.ex_3.ex_7;
 import main.java.com.exercises.list_2.ex_4.ex_8;
+import main.java.com.exercises.list_3.ex_1.ex_9;
 
 public class Main {
 
@@ -174,6 +175,47 @@ public class Main {
         }while(!isRunning);
     }
     
+    private static void exerciseListThree(){
+        System.out.println("\nWelcome to the Exercise List 3! \nType 'exit' at any moment to close the program.");
+        System.out.println("Let's start with the options! Please, select the exercise you want to run: \n0 - Return to the main menu \n1 - Bank Account \nExit - Close the program\n");
+        boolean isRunning = false;
+        
+        do{
+            try{
+                String userInput = getUserInput();
+                int exerciseSelected = userinputValidation(userInput);
+
+                if(exerciseSelected != -1){
+                    if(exerciseSelected == 0){
+                        isRunning = true;
+                        System.out.println("\nReturning to the main menu...\n");
+                        main(null);
+                        return;
+                    } else if(exerciseSelected == 1){
+                        // Exercise 1
+                        isRunning = true;
+                        
+                        ex_9 ex_9 = new ex_9();
+                        ex_9.ex_9_BankAccount();
+                        printSeparationLine();
+                        
+                        exerciseListThree();// Return to the main menu of the exercise list 2
+
+                    }else {
+                        System.err.println("\nPlease, review the options: \n0 - Return to the main menu \n1 - Bank Account \nExit - Close the program\n");
+                    }
+                
+                } else {
+                    System.err.println("\nPlease, review the options: \n0 - Return to the main menu \n1 - Bank Account \nExit - Close the program\n");
+                }
+        } catch (Exception e) {
+            System.err.println("Something went wrong. Please try to run the program again.");
+            System.exit(0);
+        }
+
+        }while(!isRunning);
+    }
+    
     private static String getUserInput(){
         try{
             String input = scanner.nextLine();
@@ -226,7 +268,7 @@ public class Main {
     public static void main(String[] args) {
 
         try{
-            System.out.println("Welcome to the Java exercises! \nPlease select the exercise list you want to run: \n1 - Exercise List 1 \n2 - Exercise List 2 \nType 'exit' to close the program.");
+            System.out.println("Welcome to the Java exercises! \nPlease select the exercise list you want to run: \n1 - Exercise List 1 \n2 - Exercise List 2 \n3 - Exercise List 3 \nType 'exit' to close the program.");
 
             do{
                 String userInput = getUserInput();
@@ -238,8 +280,11 @@ public class Main {
                 } else if(exerciseListSelected == 2){
                     exerciseListTwo();
                     break;
+                } else if(exerciseListSelected == 3){
+                    exerciseListThree();
+                    break;
                 } else {
-                    System.out.println("Select the exercise list you want to run: \n1 - Exercise List 1 \n2 - Exercise List 2");
+                    System.out.println("Select the exercise list you want to run: \n1 - Exercise List 1 \n2 - Exercise List 2 \n3 - Exercise List 3 \nType 'exit' to close the program.");
                 }
             }while(true);
 
