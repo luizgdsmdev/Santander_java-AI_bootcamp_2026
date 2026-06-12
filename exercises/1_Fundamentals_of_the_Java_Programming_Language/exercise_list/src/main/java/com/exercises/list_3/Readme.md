@@ -16,25 +16,18 @@ Get back to the [complete listing](../Readme.md) of exercises for the "Fundament
 1. Write code for a bank account that can perform the following operations:
 
 - Check balance
-
 - Check overdraft
-
 - Deposit money;
-
 - Withdraw money;
-
 - Pay a bill.
-
 - Check if the account is using overdraft.
 
 Follow these rules to implement:
 
 - The bank account must have an overdraft limit added to the account balance;
-
 - The overdraft amount is defined at the time of account creation, according to the amount deposited into the account at its creation;
-
 - If the amount deposited at account creation is R$500.00 or less, the overdraft should be R$50.00;
-
 - For amounts above R$500.00, the overdraft should be 50% of the deposited amount;
-
 - If the overdraft facility is used, the account must charge a fee of 20% of the overdraft amount used as soon as possible.
+
+Link to code explanation and code file in the [Readme](ex_1/Readme.md)

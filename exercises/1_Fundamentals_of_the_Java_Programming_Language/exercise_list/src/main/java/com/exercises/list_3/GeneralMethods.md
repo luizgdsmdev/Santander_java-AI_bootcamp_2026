@@ -182,6 +182,36 @@ This method checks if the input string exceeds the maximum or minimum limits for
     }
 ```
 
+#### parseToShort(String input)
+
+This method takes a string input and attempts to parse it into a short. It includes validation to ensure that the input is not null, not empty, and does not exceed a certain length to prevent parsing issues by calling the `shortLimitingSize(trimmed)`. If the input is valid, it returns the parsed short; otherwise, it throws an IllegalArgumentException with an appropriate error message.
+
+```java
+    private short parseToShort(String input){
+       if (input == null) {
+            System.err.println("Attempting to convert null String to short.");
+            throw new IllegalArgumentException("Input value cannot be null at parseToShort method.");
+        }
+
+        String trimmed = input.trim();
+
+        if (trimmed.isEmpty()) {
+            System.err.println("Attempting to convert empty string to short.");
+            throw new IllegalArgumentException("Input value cannot be empty at parseToShort method.");
+        }
+
+        try {
+            Object[] result = shortLimitingSize(trimmed);
+            boolean isValid = (Boolean) result[0];
+            if(!isValid){throw new IllegalArgumentException("Input value is out of the allowed range for expected value type.");}
+            return (Short) result[1];
+        } catch (NumberFormatException e) {
+            System.err.println("Failed to convert '" + input + "' to short");
+            throw new IllegalArgumentException(String.format("Invalid value: '%s'. Please enter a valid short.", input), e.getCause());
+        }
+    }
+```
+
 #### inputTypeValidation(String input, String expectedType)
 
 This method takes a string input and an expected type (e.g., "integer", "double", "long") and attempts to validate and parse the input according to the expected type. It uses a switch statement to determine which parsing method to call based on the expected type. If the input is valid for the expected type, it returns an object array containing a boolean value indicating that the input is valid and the parsed value. If the input is invalid or if an unsupported type is specified, it throws an IllegalArgumentException with an appropriate error message.
@@ -210,6 +240,37 @@ This method takes a string input and an expected type (e.g., "integer", "double"
             return new Object[]{false, null};
         }
 
+    }
+```
+
+#### shortLimitingSize(String userInput)
+
+This method checks if the input string exceeds the maximum or minimum limits for a short. It first checks if the length of the input string is greater than 5 characters, which is a rough limit to prevent parsing issues with very large numbers. If this condition is true, it throws an IllegalArgumentException with an appropriate error message. If the input passes this check, it attempts to parse it into a short. If parsing fails due to a NumberFormatException, it catches the exception and checks if the value was out of range for the short type. If it was, it throws an IllegalArgumentException with a message indicating that the number is out of range for short. If the parsing fails for any other reason, it throws an IllegalArgumentException indicating that the input is not a valid numeric value.
+
+```java
+   private Object[] shortLimitingSize(String userInput){
+
+        // Avoid trying to parse strings absurdly long
+        if (userInput.length() > 5) {
+            throw new IllegalArgumentException("Number too large. The maximum allowed value is " + Short.MAX_VALUE + ". Try something shorter.");
+        }
+
+        try {
+            short value = Short.parseShort(userInput);
+            return new Object[]{true, value};
+
+        } catch (NumberFormatException e) {
+            try {
+                // Check if it was a size error (out of range for short type)
+                double checkValue = Double.parseDouble(userInput);
+                if (checkValue > Short.MAX_VALUE || checkValue < Short.MIN_VALUE) {
+                    throw new IllegalArgumentException("Number out of range for short. The allowed range is " + Short.MIN_VALUE + " to " + Short.MAX_VALUE + ". Try again.");
+                }
+                throw new IllegalArgumentException("Invalid numeric value.");
+            } catch (NumberFormatException ex) {
+                throw new IllegalArgumentException("Invalid numeric value: " + ex.getMessage());
+            }
+        }
     }
 ```
 
