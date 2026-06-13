@@ -232,7 +232,7 @@ public class ex_9 extends GeneralMethods{
                 }
                 default -> {
                     System.err.println("\nInvalid option. Please check the options and try again.");
-                    withdrawalOptions(account, amount);
+                    withdrawalOptions(account);
                 }
             }
         }while(!isValidOption);

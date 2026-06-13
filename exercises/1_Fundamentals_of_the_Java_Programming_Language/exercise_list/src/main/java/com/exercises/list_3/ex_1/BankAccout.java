@@ -81,7 +81,7 @@ public class BankAccout {
                 throw new IllegalArgumentException("Insufficient funds for withdrawal.");
             }
 
-            setBalance(-amount);
+            setBalance(getBalance() - amount);
             return new Object[]{true, getBalance()};
 
         } catch (IllegalArgumentException e) {
@@ -101,7 +101,7 @@ public class BankAccout {
                 throw new IllegalArgumentException("Withdrawal amount exceeds overdraft limit.");
             }
 
-            setOverdraftLimit(-amount);
+            setOverdraftLimit(getOverdraftLimit() - amount);
             return new Object[]{true, getOverdraftLimit()};
 
         } catch (IllegalArgumentException e) {
@@ -122,8 +122,8 @@ public class BankAccout {
 
             if (overdraft > getOverdraftLimit()) {throw new IllegalArgumentException("Overdraft amount exceeds overdraft limit.");}
   
-            setBalance(-balance);
-            setOverdraftLimit(-overdraft);
+            setBalance(getBalance() - balance);
+            setOverdraftLimit(getOverdraftLimit() - overdraft);
 
             return new Object[]{true, getBalance(), getOverdraftLimit()};
 
@@ -145,7 +145,10 @@ public class BankAccout {
 
             double balanceDifference = amount - getBalance();
             setBalance(-Math.min(amount, getBalance()));
-            setOverdraftLimit(-Math.max(0, balanceDifference));
+
+            if(balanceDifference > 0){setOverdraftLimit(getOverdraftLimit() - balanceDifference);}
+
+
 
             return new Object[]{true, getBalance(), getOverdraftLimit()};
 
