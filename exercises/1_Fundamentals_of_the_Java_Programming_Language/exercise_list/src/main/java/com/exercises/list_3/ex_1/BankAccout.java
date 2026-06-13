@@ -44,6 +44,10 @@ public class BankAccout {
         this.overdraftLimit = overdraftLimit;
     }
 
+    public double getTotalBalance(){
+        return this.balance + this.overdraftLimit;
+    }
+
     public boolean makeDeposit(double amount) {
         //The amount value is already validated in the main method, that's why I don't need to add further validation logic here. 
         try{
@@ -74,7 +78,7 @@ public class BankAccout {
             }
 
             if (amount > getBalance()) {
-                throw new IllegalArgumentException("Insufficient funds for withdrawal. Check option 'Use overdraft' to verify your total balance.");
+                throw new IllegalArgumentException("Insufficient funds for withdrawal.");
             }
 
             setBalance(-amount);
@@ -86,6 +90,70 @@ public class BankAccout {
         }
     }
 
+    public Object[] makeOverdraftWithdrawal(double amount) {
+        //The amount value is already validated in the main method, that's why I don't need to add further validation logic here. 
+        try {
+            if (amount <= 0) {
+                throw new IllegalArgumentException("Invalid withdrawal amount.");
+            }
+
+            if (amount > getOverdraftLimit()) {
+                throw new IllegalArgumentException("Withdrawal amount exceeds overdraft limit.");
+            }
+
+            setOverdraftLimit(-amount);
+            return new Object[]{true, getOverdraftLimit()};
+
+        } catch (IllegalArgumentException e) {
+            System.err.println("Something went wrong while processing the withdrawal: " + e.getMessage());
+            return new Object[]{false, getOverdraftLimit()};
+        }
+    }
+
+    public Object[] makeCombinedWithdrawal(double balance, double overdraft) {
+        //The amount value is already validated in the main method, that's why I don't need to add further validation logic here. 
+        try {
+
+            if (balance <= 0) {throw new IllegalArgumentException("Invalid balance amount.");}
+
+            if (balance > getBalance()) {throw new IllegalArgumentException("Balance amount exceeds total balance limit.");}
+
+            if (overdraft <= 0) {throw new IllegalArgumentException("Invalid overdraft amount.");}
+
+            if (overdraft > getOverdraftLimit()) {throw new IllegalArgumentException("Overdraft amount exceeds overdraft limit.");}
+  
+            setBalance(-balance);
+            setOverdraftLimit(-overdraft);
+
+            return new Object[]{true, getBalance(), getOverdraftLimit()};
+
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Something went wrong while processing the withdrawal at makeCombinedWithdrawal method: " + e.getMessage());
+        }
+    }
+
+    public Object[] makeAutoWithdrawal(double amount) {
+        //The amount value is already validated in the main method, that's why I don't need to add further validation logic here. 
+        try {
+            if (amount <= 0) {
+                throw new IllegalArgumentException("Invalid withdrawal amount.");
+            }
+
+            if (amount > getTotalBalance()) {
+                throw new IllegalArgumentException("Withdrawal amount exceeds total balance limit.");
+            }
+
+            double balanceDifference = amount - getBalance();
+            setBalance(-Math.min(amount, getBalance()));
+            setOverdraftLimit(-Math.max(0, balanceDifference));
+
+            return new Object[]{true, getBalance(), getOverdraftLimit()};
+
+        } catch (IllegalArgumentException e) {
+            System.err.println("Something went wrong while processing the withdrawal: " + e.getMessage());
+            return new Object[]{false, getBalance(), getOverdraftLimit()};
+        }
+    }
 
 
 
