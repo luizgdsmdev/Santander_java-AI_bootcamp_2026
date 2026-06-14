@@ -68,7 +68,7 @@ public class ex_9 extends GeneralMethods{
 
     private void useBankAccount(BankAccout account){
         
-        System.out.println("What would you like to do? Current account: " + account.getAccountHolderName() + " \n0. return to the main menu \n1. Make a deposit \n2. Check balance \n3. Withdraw money");
+        System.out.println("What would you like to do? Current account: " + account.getAccountHolderName() + " \n0. return to the main menu \n1. Make a deposit \n2. Check balance \n3. Withdraw money \n4. Payment \n5. Payment history");
         String userInput = getUserInput();
         isExit(userInput);
 
@@ -83,17 +83,59 @@ public class ex_9 extends GeneralMethods{
             case "2" -> {
                 System.out.println("Your balance is: R$" + account.getBalance());
                 System.out.println("Your overdraft limit is: R$" + account.getOverdraftLimit());
-                System.out.println("Your total balance is: R$" + account.getTotalBalance());
+                System.out.println("Your total balance is: R$" + account.getTotalBalance() + "\n");
                 useBankAccount(account);
             }
             case "3" -> {
                 withdrawMoney(account);
                 useBankAccount(account);
             }
+            case "4" -> {
+                makePayment(account);
+                useBankAccount(account);
+            }
+            case "5" -> {
+                System.out.println("\nPayment history:");
+                List<Object[]> history = account.getPaymentHistory();
+                if (history == null || history.isEmpty()) {
+                    System.out.println("No payments made yet.\n");
+                } else {
+                    for (Object[] payment : history) {
+                        System.out.println(" - Amount: R$" + payment[1] + " | Payment ID: " + payment[0]);
+                    }
+                }
+                System.out.println();// Just to add a line break after the payment history.
+                useBankAccount(account);
+            }
             default -> {
                 System.out.println("\nInvalid option. Please select one of the available options.");
                 useBankAccount(account);
             }
+        }
+    }
+
+    private void makePayment(BankAccout account){
+        System.out.println("\nPlease provide the following information to make a payment:");
+        System.out.print("Payment amount: ");
+        String paymentAmount = getUserInput();
+        isExit(paymentAmount);
+
+        Object[] amountValidation = inputTypeValidation(paymentAmount, "double");
+        if (!(boolean) amountValidation[0]) {
+            System.out.println("\nInvalid payment amount. Please enter a valid number.");
+            return;
+        }
+
+        System.out.print("Payment ID, if any: ");
+        String paymentId = getUserInput();
+        isExit(paymentId);
+
+        Object[] paymentResult = account.makePayment((double) amountValidation[1], paymentId);
+
+        if ((boolean) paymentResult[0]) {
+            System.out.println("\nPayment made successfully. Your balance is now: R$" + account.getBalance() + "\n");
+        } else{
+            System.out.println("Something went wrong while processing the payment.\n");
         }
     }
 
@@ -261,20 +303,20 @@ public class ex_9 extends GeneralMethods{
 
     }
 
-    //todo:
-    // add back to main menu option to the useBankAccount method, so the user can return to the main menu without having to go through all the options again.
-    // add payment method
     public void ex_9_BankAccount(){
         System.out.println("\n\nWelcome to the Bank Account Program! \nIf you wish to leave, just type 'exit' or 'quit' at any time.");
         boolean isValid = false;
 
         try{
             do{
-                System.out.println("Check the options below: \n1. Create a new bank account \n2. Use an existing bank account");
+                System.out.println("Check the options below: \n0. back to the main menu \n1. Create a new bank account \n2. Use an existing bank account");
                 String userInput = getUserInput();
                 isExit(userInput);
 
                 switch (userInput) {
+                    case "0" -> {
+                        isValid = true;
+                    }
                     case "1" -> {
                         BankAccout newAccount = createBankAccount();
                         useBankAccount(newAccount);

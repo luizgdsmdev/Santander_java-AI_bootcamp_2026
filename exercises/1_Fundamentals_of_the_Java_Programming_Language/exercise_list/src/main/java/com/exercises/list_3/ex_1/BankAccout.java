@@ -1,4 +1,7 @@
 package main.java.com.exercises.list_3.ex_1;
+
+import java.util.List;
+
 public class BankAccout {
 
     private double balance = 0.0;
@@ -6,7 +9,8 @@ public class BankAccout {
     private boolean firstDepositMade = true;
     private String accountHolderName;
     private short accountAge;
-    
+    private List<Object[]> paymentHistory = new java.util.ArrayList<>();
+
     BankAccout(String name, short age) {
         this.accountHolderName = name;
         this.accountAge = age;
@@ -48,6 +52,13 @@ public class BankAccout {
         return this.balance + this.overdraftLimit;
     }
 
+    public List<Object[]> getPaymentHistory() {
+        return paymentHistory;
+    }
+
+    public void addPaymentHistory(String paymentId, double amount) {
+        this.paymentHistory.add(new Object[]{paymentId, amount});
+    }
     public boolean makeDeposit(double amount) {
         //The amount value is already validated in the main method, that's why I don't need to add further validation logic here. 
         try{
@@ -158,7 +169,33 @@ public class BankAccout {
         }
     }
 
+    public Object[] makePayment(double amount, String paymentIdString) {
+        //The amount value is already validated in the main method, that's why I don't need to add further validation logic here. 
+        try {
+            if (amount <= 0) {
+                throw new IllegalArgumentException("Invalid payment amount.");
+            }
 
+            if (amount > getTotalBalance()) {
+                throw new IllegalArgumentException("Payment amount exceeds total balance limit.");
+            }
+
+            Object[] paymentResult = makeAutoWithdrawal(amount);
+
+            if((Boolean) paymentResult[0]){
+                System.out.println("Payment of R$" + amount + " with ID " + paymentIdString + " was successful.");
+                addPaymentHistory(paymentIdString, amount);
+                return new Object[]{true, getTotalBalance()};
+            } else {
+                throw new IllegalArgumentException("Payment failed due to insufficient funds.");
+
+            }
+
+        } catch (IllegalArgumentException e) {
+            System.err.println("Something went wrong while processing the payment: " + e.getMessage());
+            return new Object[]{false, getBalance(), getOverdraftLimit()};
+        }
+    }
 
 
 
