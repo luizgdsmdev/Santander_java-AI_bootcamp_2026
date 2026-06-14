@@ -82,6 +82,8 @@ public class ex_9 extends GeneralMethods{
             }
             case "2" -> {
                 System.out.println("Your balance is: R$" + account.getBalance());
+                System.out.println("Your overdraft limit is: R$" + account.getOverdraftLimit());
+                System.out.println("Your total balance is: R$" + account.getTotalBalance());
                 useBankAccount(account);
             }
             case "3" -> {
@@ -128,102 +130,122 @@ public class ex_9 extends GeneralMethods{
         }
     }
 
+    private boolean autoWithdrawal(BankAccout account){
+        System.out.println("Set the desire amount to withdraw using your balance and overdraft. Your total is: R$" + account.getTotalBalance() + "\n");
+        String withdrawalAmount = getUserInput();
+        isExit(withdrawalAmount);
+
+        Object[] amountValidation = inputTypeValidation(withdrawalAmount, "double");
+        if (!(boolean) amountValidation[0]) {
+            System.out.println("\nInvalid withdrawal amount. Please enter a valid number.");
+            return false;
+        }
+
+        Object[] withdrawalResult = account.makeAutoWithdrawal((double) amountValidation[1]);
+        if ((boolean) withdrawalResult[0]) {
+            System.out.println("Withdrawal made successfully. Your balance is now: R$" + withdrawalResult[1] + " and your overdraft is now: R$" + withdrawalResult[2]);
+            return true;
+        } else{
+            System.err.println("Something went wrong while processing the withdrawal. Please check the amount you want to withdraw.");
+            return false;
+        }
+    }
+
+    private boolean balanceOnlyWithdrawal(BankAccout account){
+        System.out.println("Set the desire amount to withdraw using only your balance. Your total is: R$" + account.getBalance() + "\n");
+        String withdrawalAmount = getUserInput();
+        isExit(withdrawalAmount);
+
+        Object[] amountValidation = inputTypeValidation(withdrawalAmount, "double");
+        if (!(boolean) amountValidation[0]) {
+            System.out.println("\nInvalid withdrawal amount. Please enter a valid number.");
+            return false;
+        }
+
+        Object[] withdrawalResult = account.makeWithdrawal((double) amountValidation[1]);
+        if ((boolean) withdrawalResult[0]) {
+            System.out.println("Withdrawal made successfully. Your balance is now: R$" + withdrawalResult[1]);
+            return true;
+        } else{
+            System.err.println("Something went wrong while processing the withdrawal. Please check the amount you want to withdraw.");
+            return false;
+        }
+    }
+
+    private boolean overdraftOnlyWithdrawal(BankAccout account){
+        System.out.println("Set the desire amount to withdraw using only your overdraft. Your total is: R$" + account.getOverdraftLimit() + "\n");
+        String withdrawalAmount = getUserInput();
+        isExit(withdrawalAmount);
+
+        Object[] amountValidation = inputTypeValidation(withdrawalAmount, "double");
+        if (!(boolean) amountValidation[0]) {
+            System.out.println("\nInvalid withdrawal amount. Please enter a valid number.");
+            return false;
+        }
+
+        Object[] withdrawalResult = account.makeOverdraftWithdrawal((double) amountValidation[1]);
+        if ((boolean) withdrawalResult[0]) {
+            System.out.println("Withdrawal made successfully. Your balance is now: R$" + withdrawalResult[1]);
+            return true;
+        } else{
+            System.err.println("Something went wrong while processing the withdrawal. Please check the amount you want to withdraw.");
+            return false;
+        }
+    }
+
+    private boolean combinedBalanceAndOverdraftWithdrawal(BankAccout account){
+        System.out.println("\nYour total is: R$" + account.getTotalBalance() + "\n");
+        System.out.println("Set the desire amount using your balance: R$" + account.getBalance() + "\n");
+        String balanceAmount = getUserInput();
+        isExit(balanceAmount);
+
+        Object[] balanceAmountValidation = inputTypeValidation(balanceAmount, "double");
+        if (!(boolean) balanceAmountValidation[0]) {
+            System.err.println("\nInvalid withdrawal amount. Please enter a valid number.");
+            return false;
+        }
+
+        System.out.println("Set the desire amount using your overdraft: R$" + account.getOverdraftLimit() + "\n");
+        String overdraftAmount = getUserInput();
+        isExit(overdraftAmount);
+
+        Object[] overdraftValidation = inputTypeValidation(overdraftAmount, "double");
+        if (!(boolean) overdraftValidation[0]) {
+            System.err.println("\nInvalid withdrawal amount. Please enter a valid number.");
+            return false;
+        }
+
+        Object[] withdrawalResult = account.makeCombinedWithdrawal((double) balanceAmountValidation[1], (double) overdraftValidation[1]);
+        if ((boolean) withdrawalResult[0]) {
+            System.out.println("Withdrawal made successfully. Remainning value: \n- Balance: R$" + withdrawalResult[1] + "\n- Overdraft: R$" + withdrawalResult[2]);
+            return true;
+        } else{
+            System.err.println("Something went wrong while processing the withdrawal. Please check the amounts you want to withdraw.");
+            return false;
+        }
+    }
+
     private void  withdrawalOptions(BankAccout account){
         boolean isValidOption = false;
 
         do{
-            System.out.println("\nYour current balance is: R$" + account.getBalance() + " and your overdraft limit is: R$" + account.getOverdraftLimit() + "\nTotal balance: R$" + account.getTotalBalance() + "\n1. Auto withdrawal \n2. Balance only \n3. Overdraft only \n4. Combine balance and overdraft \n5. Cancel the withdrawal\n");
+            System.out.println("\nYour current balance is: R$" + account.getBalance() + " and your overdraft limit is: R$" + account.getOverdraftLimit() +  "\n1. Auto withdrawal \n2. Balance only \n3. Overdraft only \n4. Combine balance and overdraft \n5. Cancel the withdrawal\n");
             String userInput = getUserInput();
             isExit(userInput);
 
             // 1. Auto withdrawal 2. Balance only 3. Overdraft only 4. Combine balance and overdraft 5. Cancel the withdrawal
             switch (userInput.toLowerCase()) {
                 case "1" -> {
-                    System.out.println("Set the desire amount to withdraw using your balance and overdraft. Your total is: R$" + account.getTotalBalance() + "\n");
-                    String withdrawalAmount = getUserInput();
-                    isExit(withdrawalAmount);
-
-                    Object[] amountValidation = inputTypeValidation(withdrawalAmount, "double");
-                    if (!(boolean) amountValidation[0]) {
-                        System.out.println("\nInvalid withdrawal amount. Please enter a valid number.");
-                        return;
-                    }
-            
-                    Object[] withdrawalResult = account.makeAutoWithdrawal((double) amountValidation[1]);
-                    if ((boolean) withdrawalResult[0]) {
-                        isValidOption = true;
-                        System.out.println("Withdrawal made successfully. Your balance is now: R$" + withdrawalResult[1] + " and your overdraft is now: R$" + withdrawalResult[2]);
-                    } else{
-                        System.err.println("Something went wrong while processing the withdrawal. Please check the amount you want to withdraw.");
-                    }
+                    isValidOption = autoWithdrawal(account);
                 }
                 case "2" -> {
-                    System.out.println("Set the desire amount to withdraw using only your balance. Your total is: R$" + account.getBalance() + "\n");
-                    String withdrawalAmount = getUserInput();
-                    isExit(withdrawalAmount);
-
-                    Object[] amountValidation = inputTypeValidation(withdrawalAmount, "double");
-                    if (!(boolean) amountValidation[0]) {
-                        System.out.println("\nInvalid withdrawal amount. Please enter a valid number.");
-                        return;
-                    }
-            
-                    Object[] withdrawalResult = account.makeWithdrawal((double) amountValidation[1]);
-                    if ((boolean) withdrawalResult[0]) {
-                        isValidOption = true;
-                        System.out.println("Withdrawal made successfully. Your balance is now: R$" + withdrawalResult[1]);
-                    } else{
-                        System.err.println("Something went wrong while processing the withdrawal. Please check the amount you want to withdraw.");
-                    }
+                    isValidOption = balanceOnlyWithdrawal(account);
                 }
                 case "3" -> {
-                    System.out.println("Set the desire amount to withdraw using only your overdraft. Your total is: R$" + account.getOverdraftLimit() + "\n");
-                    String withdrawalAmount = getUserInput();
-                    isExit(withdrawalAmount);
-
-                    Object[] amountValidation = inputTypeValidation(withdrawalAmount, "double");
-                    if (!(boolean) amountValidation[0]) {
-                        System.out.println("\nInvalid withdrawal amount. Please enter a valid number.");
-                        return;
-                    }
-            
-                    Object[] withdrawalResult = account.makeOverdraftWithdrawal((double) amountValidation[1]);
-                    if ((boolean) withdrawalResult[0]) {
-                        isValidOption = true;
-                        System.out.println("Withdrawal made successfully. Your balance is now: R$" + withdrawalResult[1]);
-                    } else{
-                        System.err.println("Something went wrong while processing the withdrawal. Please check the amount you want to withdraw.");
-                    }
+                    isValidOption = overdraftOnlyWithdrawal(account);
                 }
                 case "4" -> {
-                    System.out.println("\nYour total is: R$" + account.getTotalBalance() + "\n");
-                    System.out.println("Set the desire amount using your balance: R$" + account.getBalance() + "\n");
-                    String balanceAmount = getUserInput();
-                    isExit(balanceAmount);
-
-                    Object[] balanceAmountValidation = inputTypeValidation(balanceAmount, "double");
-                    if (!(boolean) balanceAmountValidation[0]) {
-                        System.err.println("\nInvalid withdrawal amount. Please enter a valid number.");
-                        return;
-                    }
-
-                    System.out.println("Set the desire amount using your overdraft: R$" + account.getOverdraftLimit() + "\n");
-                    String overdraftAmount = getUserInput();
-                    isExit(overdraftAmount);
-
-                    Object[] overdraftValidation = inputTypeValidation(overdraftAmount, "double");
-                    if (!(boolean) overdraftValidation[0]) {
-                        System.err.println("\nInvalid withdrawal amount. Please enter a valid number.");
-                        return;
-                    }
-
-                    Object[] withdrawalResult = account.makeCombinedWithdrawal((double) balanceAmountValidation[1], (double) overdraftValidation[1]);
-                    if ((boolean) withdrawalResult[0]) {
-                        System.out.println("Withdrawal made successfully. Remainning value: \n- Balance: R$" + withdrawalResult[1] + "\n- Overdraft: R$" + withdrawalResult[2]);
-                        isValidOption = true;
-                    } else{
-                        System.err.println("Something went wrong while processing the withdrawal. Please check the amounts you want to withdraw.");
-                    }
+                    isValidOption = combinedBalanceAndOverdraftWithdrawal(account);
                 }
                 case "5", "cancel" -> {
                     System.out.println("\nWithdrawal cancelled. Returning to the previous menu.");
@@ -239,6 +261,9 @@ public class ex_9 extends GeneralMethods{
 
     }
 
+    //todo:
+    // add back to main menu option to the useBankAccount method, so the user can return to the main menu without having to go through all the options again.
+    // add payment method
     public void ex_9_BankAccount(){
         System.out.println("\n\nWelcome to the Bank Account Program! \nIf you wish to leave, just type 'exit' or 'quit' at any time.");
         boolean isValid = false;
