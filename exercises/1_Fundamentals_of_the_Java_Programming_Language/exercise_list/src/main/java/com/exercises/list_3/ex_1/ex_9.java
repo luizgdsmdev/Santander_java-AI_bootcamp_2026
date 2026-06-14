@@ -132,7 +132,7 @@ public class ex_9 extends GeneralMethods{
         boolean isValidOption = false;
 
         do{
-            System.out.println("\nYour current balance is: R$" + account.getBalance() + " and your overdraft limit is: R$" + account.getOverdraftLimit() + "\n Total balance: R$" + account.getTotalBalance() + "\n1. Auto withdrawal \n2. Balance only \n3. Overdraft only \n4. Combine balance and overdraft \n5. Cancel the withdrawal\n");
+            System.out.println("\nYour current balance is: R$" + account.getBalance() + " and your overdraft limit is: R$" + account.getOverdraftLimit() + "\nTotal balance: R$" + account.getTotalBalance() + "\n1. Auto withdrawal \n2. Balance only \n3. Overdraft only \n4. Combine balance and overdraft \n5. Cancel the withdrawal\n");
             String userInput = getUserInput();
             isExit(userInput);
 

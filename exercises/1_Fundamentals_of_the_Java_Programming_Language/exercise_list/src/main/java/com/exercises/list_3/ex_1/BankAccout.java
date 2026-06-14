@@ -41,7 +41,7 @@ public class BankAccout {
     }
 
     private void setOverdraftLimit(double overdraftLimit) {
-        this.overdraftLimit = overdraftLimit;
+        this.overdraftLimit += overdraftLimit;
     }
 
     public double getTotalBalance(){
@@ -81,7 +81,7 @@ public class BankAccout {
                 throw new IllegalArgumentException("Insufficient funds for withdrawal.");
             }
 
-            setBalance(getBalance() - amount);
+            setBalance(-amount);
             return new Object[]{true, getBalance()};
 
         } catch (IllegalArgumentException e) {
@@ -101,7 +101,7 @@ public class BankAccout {
                 throw new IllegalArgumentException("Withdrawal amount exceeds overdraft limit.");
             }
 
-            setOverdraftLimit(getOverdraftLimit() - amount);
+            setOverdraftLimit(-amount);
             return new Object[]{true, getOverdraftLimit()};
 
         } catch (IllegalArgumentException e) {
@@ -122,8 +122,8 @@ public class BankAccout {
 
             if (overdraft > getOverdraftLimit()) {throw new IllegalArgumentException("Overdraft amount exceeds overdraft limit.");}
   
-            setBalance(getBalance() - balance);
-            setOverdraftLimit(getOverdraftLimit() - overdraft);
+            setBalance(-balance);
+            setOverdraftLimit(-overdraft);
 
             return new Object[]{true, getBalance(), getOverdraftLimit()};
 
@@ -143,12 +143,12 @@ public class BankAccout {
                 throw new IllegalArgumentException("Withdrawal amount exceeds total balance limit.");
             }
 
-            double balanceDifference = amount - getBalance();
-            setBalance(-Math.min(amount, getBalance()));
+            // withdraw as much as possible from balance first
+            double withdrawFromBalance = Math.min(amount, getBalance());
+            setBalance(-withdrawFromBalance);
 
-            if(balanceDifference > 0){setOverdraftLimit(getOverdraftLimit() - balanceDifference);}
-
-
+            double balanceDifference = amount - withdrawFromBalance; // remaining amount to take from overdraft
+            if (balanceDifference > 0) { setOverdraftLimit(-balanceDifference); }
 
             return new Object[]{true, getBalance(), getOverdraftLimit()};
 
