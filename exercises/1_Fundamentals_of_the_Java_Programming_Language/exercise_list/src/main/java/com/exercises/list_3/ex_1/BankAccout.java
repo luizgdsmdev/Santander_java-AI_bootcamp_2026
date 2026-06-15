@@ -48,6 +48,11 @@ public class BankAccout {
         this.overdraftLimit += overdraftLimit;
     }
 
+    private double getOverdraftFee(double amount) {
+        return amount * 0.2; // 20% fee on the overdraft amount, according to the exercise requirements.
+
+    }
+    
     public double getTotalBalance(){
         return this.balance + this.overdraftLimit;
     }
@@ -104,12 +109,13 @@ public class BankAccout {
     public Object[] makeOverdraftWithdrawal(double amount) {
         //The amount value is already validated in the main method, that's why I don't need to add further validation logic here. 
         try {
+            amount += getOverdraftFee(amount);
             if (amount <= 0) {
                 throw new IllegalArgumentException("Invalid withdrawal amount.");
             }
 
             if (amount > getOverdraftLimit()) {
-                throw new IllegalArgumentException("Withdrawal amount exceeds overdraft limit.");
+                throw new IllegalArgumentException("Withdrawal amount exceeds overdraft limit and fees.");
             }
 
             setOverdraftLimit(-amount);
@@ -124,14 +130,14 @@ public class BankAccout {
     public Object[] makeCombinedWithdrawal(double balance, double overdraft) {
         //The amount value is already validated in the main method, that's why I don't need to add further validation logic here. 
         try {
-
+            overdraft += getOverdraftFee(overdraft);
             if (balance <= 0) {throw new IllegalArgumentException("Invalid balance amount.");}
 
             if (balance > getBalance()) {throw new IllegalArgumentException("Balance amount exceeds total balance limit.");}
 
             if (overdraft <= 0) {throw new IllegalArgumentException("Invalid overdraft amount.");}
 
-            if (overdraft > getOverdraftLimit()) {throw new IllegalArgumentException("Overdraft amount exceeds overdraft limit.");}
+            if (overdraft > getOverdraftLimit()) {throw new IllegalArgumentException("Overdraft amount exceeds overdraft limit and fees.");}
   
             setBalance(-balance);
             setOverdraftLimit(-overdraft);
@@ -146,20 +152,24 @@ public class BankAccout {
     public Object[] makeAutoWithdrawal(double amount) {
         //The amount value is already validated in the main method, that's why I don't need to add further validation logic here. 
         try {
-            if (amount <= 0) {
-                throw new IllegalArgumentException("Invalid withdrawal amount.");
-            }
+            if (amount <= 0) {throw new IllegalArgumentException("Invalid withdrawal amount.");}
 
-            if (amount > getTotalBalance()) {
-                throw new IllegalArgumentException("Withdrawal amount exceeds total balance limit.");
-            }
+            if (amount > getTotalBalance()) {throw new IllegalArgumentException("Withdrawal amount exceeds total balance limit.");}
 
-            // withdraw as much as possible from balance first
+
+
+            // First calculates the total amount for the withdrawal, including the overdraft fee, 
+            // Only than continues
             double withdrawFromBalance = Math.min(amount, getBalance());
-            setBalance(-withdrawFromBalance);
-
             double balanceDifference = amount - withdrawFromBalance; // remaining amount to take from overdraft
-            if (balanceDifference > 0) { setOverdraftLimit(-balanceDifference); }
+            double overdraftFee = getOverdraftFee(balanceDifference); // Required overdraft fee
+            double totalOverdraftAmount = balanceDifference + overdraftFee; // Total amount to be taken from overdraft, including fees
+            
+            // Guarantees that the overdraft fee is covered by the overdraft limit, otherwise the withdrawal cannot be processed.
+            if(totalOverdraftAmount > getOverdraftLimit()){throw new IllegalArgumentException("Withdrawal amount exceeds total balance limit and fees.");}
+
+            setBalance(-withdrawFromBalance);
+            if (totalOverdraftAmount > 0) { setOverdraftLimit(-totalOverdraftAmount); }
 
             return new Object[]{true, getBalance(), getOverdraftLimit()};
 
