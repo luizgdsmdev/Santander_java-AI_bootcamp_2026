@@ -5,11 +5,6 @@ import java.util.List;
 // I know the class name is misspelled, but I prefer to keep it this way to avoid having to change all the references to the class in the main method and in the ex_9 class, 
 // since it's already implemented with the misspelled name and changing it would require changing all the references to it, which could lead to more errors if I miss any reference.
 
-// TODO
-// If the overdraft facility is used, the account must charge a fee of 20% of the overdraft amount used as soon as possible.
-// Add overdraft use alert
-// Update the documentation and also add to the list the extras funtionalities added outside the requirements
-
 import main.java.com.exercises.list_3.GeneralMethods;
 public class ex_9 extends GeneralMethods{
     private List<BankAccout> accounts = new ArrayList<>();
@@ -193,6 +188,11 @@ public class ex_9 extends GeneralMethods{
 
         Object[] withdrawalResult = account.makeAutoWithdrawal((double) amountValidation[1]);
         if ((boolean) withdrawalResult[0]) {
+            if ((boolean) withdrawalResult[3]) {
+                System.out.println("Alert: Your withdrawal used your overdraft limit. Please be aware of the fees associated with overdraft usage.");
+
+            }
+
             System.out.println("Withdrawal made successfully. Your balance is now: R$" + withdrawalResult[1] + " and your overdraft is now: R$" + withdrawalResult[2]);
             return true;
         } else{

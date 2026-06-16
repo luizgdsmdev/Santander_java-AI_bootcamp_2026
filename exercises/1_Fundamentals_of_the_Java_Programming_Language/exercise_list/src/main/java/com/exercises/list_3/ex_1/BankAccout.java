@@ -169,9 +169,12 @@ public class BankAccout {
             if(totalOverdraftAmount > getOverdraftLimit()){throw new IllegalArgumentException("Withdrawal amount exceeds total balance limit and fees.");}
 
             setBalance(-withdrawFromBalance);
-            if (totalOverdraftAmount > 0) { setOverdraftLimit(-totalOverdraftAmount); }
+            if (totalOverdraftAmount > 0) { 
+                setOverdraftLimit(-totalOverdraftAmount); 
+                return new Object[]{true, getBalance(), getOverdraftLimit(), true}; // Indicates that the overdraft was used
+            }
 
-            return new Object[]{true, getBalance(), getOverdraftLimit()};
+            return new Object[]{true, getBalance(), getOverdraftLimit(), false}; // Indicates that the overdraft was not used
 
         } catch (IllegalArgumentException e) {
             System.err.println("Something went wrong while processing the withdrawal: " + e.getMessage());
