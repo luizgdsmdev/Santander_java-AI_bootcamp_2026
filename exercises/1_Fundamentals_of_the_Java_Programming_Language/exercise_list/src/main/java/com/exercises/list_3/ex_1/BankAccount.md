@@ -61,6 +61,11 @@ Simple getter and setter for the account balance. Used to get the current balanc
         return balance;
     }
 
+    public double getTotalBalance(){
+        return this.balance + this.overdraftLimit;
+    }
+
+
     public void setBalance(double balance) {
         this.balance += balance;
     }
@@ -79,6 +84,12 @@ Simple getter and setter for the overdraft limit. The getter method allows other
     private void setOverdraftLimit(double overdraftLimit) {
         this.overdraftLimit = overdraftLimit;
     }
+
+    private double getOverdraftFee(double amount) {
+        return amount * 0.2; // 20% fee on the overdraft amount, according to the exercise requirements.
+
+    }
+
 ```
 
 #### makeDeposit method
@@ -122,7 +133,7 @@ This method allows the user to withdraw money from the account. It takes the wit
             }
 
             if (amount > getBalance()) {
-                throw new IllegalArgumentException("Insufficient funds for withdrawal. Check option 'Use overdraft' to verify your total balance.");
+                throw new IllegalArgumentException("Insufficient funds for withdrawal.");
             }
 
             setBalance(-amount);
@@ -153,5 +164,151 @@ This method checks if the deposit being made is the first one for the account. I
             return true;
         }
         return false;
+    }
+```
+
+#### getPaymentHistory() method
+
+This method returns the payment history of the account, which is stored as a list of object arrays. Each object array contains information about a payment, such as the payment ID and the amount. The method allows other parts of the program to access the payment history for display or further processing.
+
+```java
+    public List<Object[]> getPaymentHistory() {
+        return paymentHistory;
+    }
+```
+
+#### addPaymentHistory(String paymentId, double amount) method
+
+This method adds a new payment entry to the payment history list. It takes a payment ID and an amount as parameters, creates an object array with this information, and adds it to the payment history list. This method is typically called after a successful payment transaction to keep a record of the payment details.
+
+```java
+    public void addPaymentHistory(String paymentId, double amount) {
+        this.paymentHistory.add(new Object[]{paymentId, amount});
+    }
+```
+
+#### makeOverdraftWithdrawal(double amount) method
+
+This method allows the user to make a withdrawal that exceeds the current balance, utilizing the overdraft limit. It takes the withdrawal amount as a parameter and calculates the total amount to be withdrawn, including any applicable overdraft fees. The method checks if the total withdrawal amount exceeds the overdraft limit, and if so, it throws an IllegalArgumentException. If the withdrawal is successful, it updates the overdraft limit accordingly and returns an array of objects indicating whether the withdrawal was successful and the updated overdraft limit. If there is an error during the process, it catches the exception and returns an array indicating that the withdrawal was unsuccessful along with the current overdraft limit.
+
+```java
+    public Object[] makeOverdraftWithdrawal(double amount) {
+        //The amount value is already validated in the main method, that's why I don't need to add further validation logic here.
+        try {
+            amount += getOverdraftFee(amount);
+            if (amount <= 0) {
+                throw new IllegalArgumentException("Invalid withdrawal amount.");
+            }
+
+            if (amount > getOverdraftLimit()) {
+                throw new IllegalArgumentException("Withdrawal amount exceeds overdraft limit and fees.");
+            }
+
+            setOverdraftLimit(-amount);
+            return new Object[]{true, getOverdraftLimit()};
+
+        } catch (IllegalArgumentException e) {
+            System.err.println("Something went wrong while processing the withdrawal: " + e.getMessage());
+            return new Object[]{false, getOverdraftLimit()};
+        }
+    }
+```
+
+#### makeCombinedWithdrawal(double balance, double overdraft) method
+
+This method allows the user to make a withdrawal that combines both the current balance and the overdraft limit. It takes the withdrawal amount for the balance and the overdraft as parameters, calculates the total amount to be withdrawn including any applicable overdraft fees, and checks if the total withdrawal amount exceeds the combined limits. If the withdrawal is successful, it updates both the balance and the overdraft limit accordingly and returns an array of objects indicating whether the withdrawal was successful, along with the updated balance and overdraft limit. If there is an error during the process, it catches the exception and returns an array indicating that the withdrawal was unsuccessful along with the current balance and overdraft limit.
+
+```java
+    public Object[] makeCombinedWithdrawal(double balance, double overdraft) {
+        //The amount value is already validated in the main method, that's why I don't need to add further validation logic here.
+        try {
+            overdraft += getOverdraftFee(overdraft);
+            if (balance <= 0) {throw new IllegalArgumentException("Invalid balance amount.");}
+
+            if (balance > getBalance()) {throw new IllegalArgumentException("Balance amount exceeds total balance limit.");}
+
+            if (overdraft <= 0) {throw new IllegalArgumentException("Invalid overdraft amount.");}
+
+            if (overdraft > getOverdraftLimit()) {throw new IllegalArgumentException("Overdraft amount exceeds overdraft limit and fees.");}
+
+            setBalance(-balance);
+            setOverdraftLimit(-overdraft);
+
+            return new Object[]{true, getBalance(), getOverdraftLimit()};
+
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Something went wrong while processing the withdrawal at makeCombinedWithdrawal method: " + e.getMessage());
+        }
+    }
+```
+
+#### makeAutoWithdrawal(double amount) method
+
+This method allows the user to make a withdrawal that automatically determines whether to use the balance, the overdraft, or a combination of both based on the withdrawal amount. It takes the withdrawal amount as a parameter, checks if it exceeds the current balance, and if so, it calculates how much of the withdrawal can be covered by the balance and how much needs to be covered by the overdraft. It also calculates any applicable overdraft fees and checks if the total withdrawal amount exceeds the combined limits. If the withdrawal is successful, it updates both the balance and the overdraft limit accordingly and returns an array of objects indicating whether the withdrawal was successful, along with the updated balance and overdraft limit. If there is an error during the process, it catches the exception and returns an array indicating that the withdrawal was unsuccessful along with the current balance and overdraft limit.
+
+```java
+    public Object[] makeAutoWithdrawal(double amount) {
+        //The amount value is already validated in the main method, that's why I don't need to add further validation logic here.
+        try {
+            if (amount <= 0) {throw new IllegalArgumentException("Invalid withdrawal amount.");}
+
+            if (amount > getTotalBalance()) {throw new IllegalArgumentException("Withdrawal amount exceeds total balance limit.");}
+
+            // First calculates the total amount for the withdrawal, including the overdraft fee,
+            // Only than continues
+            double withdrawFromBalance = Math.min(amount, getBalance());
+            double balanceDifference = amount - withdrawFromBalance; // remaining amount to take from overdraft
+            double overdraftFee = getOverdraftFee(balanceDifference); // Required overdraft fee
+            double totalOverdraftAmount = balanceDifference + overdraftFee; // Total amount to be taken from overdraft, including fees
+
+            // Guarantees that the overdraft fee is covered by the overdraft limit, otherwise the withdrawal cannot be processed.
+            if(totalOverdraftAmount > getOverdraftLimit()){throw new IllegalArgumentException("Withdrawal amount exceeds total balance limit and fees.");}
+
+            setBalance(-withdrawFromBalance);
+            if (totalOverdraftAmount > 0) {
+                setOverdraftLimit(-totalOverdraftAmount);
+                return new Object[]{true, getBalance(), getOverdraftLimit(), true}; // Indicates that the overdraft was used
+            }
+
+            return new Object[]{true, getBalance(), getOverdraftLimit(), false}; // Indicates that the overdraft was not used
+
+        } catch (IllegalArgumentException e) {
+            System.err.println("Something went wrong while processing the withdrawal: " + e.getMessage());
+            return new Object[]{false, getBalance(), getOverdraftLimit()};
+        }
+    }
+```
+
+#### makePayment(double amount, String paymentIdString) method
+
+This method allows the user to make a payment by automatically determining whether to use the balance, the overdraft, or a combination of both based on the payment amount. It takes the payment amount and a payment ID as parameters, checks if the payment amount exceeds the total balance, and if so, it calculates how much of the payment can be covered by the balance and how much needs to be covered by the overdraft. It also calculates any applicable overdraft fees and checks if the total payment amount exceeds the combined limits. If the payment is successful, it updates both the balance and the overdraft limit accordingly, adds the payment details to the payment history, and returns an array of objects indicating whether the payment was successful along with the updated total balance. If there is an error during the process, it catches the exception and returns an array indicating that the payment was unsuccessful along with the current balance and overdraft limit.
+
+```java
+    public Object[] makePayment(double amount, String paymentIdString) {
+        //The amount value is already validated in the main method, that's why I don't need to add further validation logic here.
+        try {
+            if (amount <= 0) {
+                throw new IllegalArgumentException("Invalid payment amount.");
+            }
+
+            if (amount > getTotalBalance()) {
+                throw new IllegalArgumentException("Payment amount exceeds total balance limit.");
+            }
+
+            Object[] paymentResult = makeAutoWithdrawal(amount);
+
+            if((Boolean) paymentResult[0]){
+                System.out.println("Payment of R$" + amount + " with ID " + paymentIdString + " was successful.");
+                addPaymentHistory(paymentIdString, amount);
+                return new Object[]{true, getTotalBalance()};
+            } else {
+                throw new IllegalArgumentException("Payment failed due to insufficient funds.");
+
+            }
+
+        } catch (IllegalArgumentException e) {
+            System.err.println("Something went wrong while processing the payment: " + e.getMessage());
+            return new Object[]{false, getBalance(), getOverdraftLimit()};
+        }
     }
 ```

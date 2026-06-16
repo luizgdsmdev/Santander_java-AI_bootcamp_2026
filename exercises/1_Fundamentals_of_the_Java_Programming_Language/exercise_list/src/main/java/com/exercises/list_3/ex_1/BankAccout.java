@@ -64,6 +64,7 @@ public class BankAccout {
     public void addPaymentHistory(String paymentId, double amount) {
         this.paymentHistory.add(new Object[]{paymentId, amount});
     }
+    
     public boolean makeDeposit(double amount) {
         //The amount value is already validated in the main method, that's why I don't need to add further validation logic here. 
         try{
@@ -210,8 +211,6 @@ public class BankAccout {
         }
     }
 
-
-
     /**
      * Checks if the first deposit has been made and updates the flag accordingly. Is also responsible for validating the amount for the
      * overdraft limit. 
@@ -235,8 +234,5 @@ public class BankAccout {
         }
         return false;
     }
-    
-
-
 
 }
