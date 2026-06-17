@@ -3,10 +3,57 @@ package main.java.com.exercises.list_3.ex_2;
 import main.java.com.exercises.list_3.GeneralMethods;
 
 public class ex_10 extends GeneralMethods {
+    driverActions driver = new driverActions();
 
     private void startNewDrive() {
-        System.out.println("\nStarting a new drive... \nRemember to always follow the car rules and driver actions for a safe and enjoyable experience!");
+        try{
+            boolean isDriving = driver.startDriving();
+            if(!isDriving){
+                isDriving = false;
+                return;
+            }
+            System.out.println("You have started driving!");
+
+
+        }catch (IllegalStateException e) {
+            System.err.println("Something went wrong while trying to start driving: " + e.getMessage());
+        }
     }
+
+    private void driverOptions() {
+        
+        boolean isValid = false;
+
+        do {
+            System.out.println("\nDriver Options: \n1. Accelerate. \n2. Brake. \n3. Turn left. \n4. Turn right. \n5. Go straight. \n6. Reverse.");
+            String userInput = getUserInput();
+            isExit(userInput);
+
+            switch (userInput) {
+                case "1" -> {
+                    driver.accelerate();
+                }
+                case "2" -> {
+                    driver.brake();
+                }
+                 case "3" -> {
+                    driver.turnLeft();
+                }
+                case "4" -> {
+                    driver.turnRight();
+                }
+                case "5" -> {
+                    driver.goStraight();
+                }
+                case "6" -> {
+                    driver.reverse();
+                }
+                default -> System.out.println("\nInvalid option. Please select one of the available options.");
+            }
+        } while (!isValid);
+
+    }
+
 
     private void checkCarRules() {
         System.out.println("\nCar Rules: \n1. Always wear your seatbelt. \n2. Follow the speed limits. \n3. Do not use your phone while driving. \n4. Always signal when changing lanes or turning.");
