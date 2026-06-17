@@ -1,5 +1,7 @@
 package main.java.com.exercises.list_3.ex_2;
 
-private class driverActions {
+import main.java.com.exercises.list_3.ex_2.carEngine;
+
+private class driverActions extends carEngine {
 
 }
