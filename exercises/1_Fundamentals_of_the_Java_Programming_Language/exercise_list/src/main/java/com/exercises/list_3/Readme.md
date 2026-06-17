@@ -31,3 +31,33 @@ Follow these rules to implement:
 - If the overdraft facility is used, the account must charge a fee of 20% of the overdraft amount used as soon as possible.
 
 Link to code explanation and code file in the [Readme](ex_1/Readme.md)
+
+### Exercise 2
+
+Write code that controls the functions of a car. It should have the following functions:
+
+- Start the car;
+- Turn off the car;
+- Accelerate;
+- Decrease speed;
+- Turn left/right;
+- Check speed;
+- Change gear
+- Follow these implementation rules:
+- When the car is created, it must start off, in neutral, and with its speed at 0;
+- The car cannot perform any functions when turned off;
+- When the car stops while accelerating, it must increment its speed by 1 km/h (it can reach a maximum of 120 km/h);
+- When the car decreases its speed, it must decrement its speed by 1 km/h (it can reach a minimum of 0 km/h);
+- The car must have 6 gears; skipping gears is not allowed.
+- The car's speed must respect the following limits for each speed:
+  - If the car is in neutral (0), it cannot accelerate.
+  - If you are in 1st gear, your speed can be between 0km and 20km.
+  - If you are in 2nd gear, your speed can be between 21km and 40km.
+  - If you are in 3rd gear, your speed can be between 41km and 60km.
+  - If you are in 4th gear, your speed can be between 61km and 80km.
+  - If you are in 5th gear, your speed can be between 81km and 100km.
+  - If you are in 6th gear, your speed can be between 101km and 120km.
+- The car can be turned off if it is in neutral (0) and its speed is 0 km.
+- The car can only turn left/right if its speed is at least 1km and at most 40km.
+
+Link to code explanation and code file in the [Readme](ex_2/Readme.md)

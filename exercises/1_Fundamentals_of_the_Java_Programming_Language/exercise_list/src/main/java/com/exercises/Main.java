@@ -11,6 +11,7 @@ import com.exercises.list_2.ex_6.ex_6;
 import main.java.com.exercises.list_2.ex_3.ex_7;
 import main.java.com.exercises.list_2.ex_4.ex_8;
 import main.java.com.exercises.list_3.ex_1.ex_9;
+import main.java.com.exercises.list_3.ex_2.ex_10;
 
 public class Main {
 
@@ -177,7 +178,7 @@ public class Main {
     
     private static void exerciseListThree(){
         System.out.println("\nWelcome to the Exercise List 3! \nType 'exit' at any moment to close the program.");
-        System.out.println("Let's start with the options! Please, select the exercise you want to run: \n0 - Return to the main menu \n1 - Bank Account \nExit - Close the program\n");
+        System.out.println("Let's start with the options! Please, select the exercise you want to run: \n0 - Return to the main menu \n1 - Bank Account\n2 - Car Drive Simulation \nExit - Close the program\n");
         boolean isRunning = false;
         
         do{
@@ -197,6 +198,16 @@ public class Main {
                         
                         ex_9 ex_9 = new ex_9();
                         ex_9.ex_9_BankAccount();
+                        printSeparationLine();
+                        
+                        exerciseListThree();// Return to the main menu of the exercise list 2
+
+                    } else if(exerciseSelected == 2){
+                        // Exercise 2
+                        isRunning = true;
+                        
+                        ex_10 ex_10 = new ex_10();
+                        ex_10.ex_10_carDrive();
                         printSeparationLine();
                         
                         exerciseListThree();// Return to the main menu of the exercise list 2
