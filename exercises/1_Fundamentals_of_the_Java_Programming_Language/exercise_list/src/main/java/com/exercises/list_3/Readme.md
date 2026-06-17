@@ -32,6 +32,8 @@ Follow these rules to implement:
 
 Link to code explanation and code file in the [Readme](ex_1/Readme.md)
 
+---
+
 ### Exercise 2
 
 Write code that controls the functions of a car. It should have the following functions:
