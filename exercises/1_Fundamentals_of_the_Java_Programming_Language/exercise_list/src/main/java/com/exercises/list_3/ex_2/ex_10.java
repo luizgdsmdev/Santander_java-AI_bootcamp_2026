@@ -12,8 +12,9 @@ public class ex_10 extends GeneralMethods {
                 isDriving = false;
                 return;
             }
-            System.out.println("You have started driving!");
+            System.out.println("You have started driving!\n");
 
+            driverOptions();
 
         }catch (IllegalStateException e) {
             System.err.println("Something went wrong while trying to start driving: " + e.getMessage());
@@ -25,32 +26,82 @@ public class ex_10 extends GeneralMethods {
         boolean isValid = false;
 
         do {
-            System.out.println("\nDriver Options: \n1. Accelerate. \n2. Brake. \n3. Turn left. \n4. Turn right. \n5. Go straight. \n6. Reverse.");
+            System.out.println("\nDriver Options: \n - 1. Accelerate. 2. Reduce speed. 3. Brake. \n - 4. Turn left. 5. Turn right. \n - 6. Go straight. 7. Reverse. \n - 8. Change gear. 9. Reduce gear.\n - 0. Exit.");
             String userInput = getUserInput();
             isExit(userInput);
 
             switch (userInput) {
                 case "1" -> {
-                    driver.accelerate();
+                    accelerate();
                 }
                 case "2" -> {
-                    driver.brake();
+                    // driver.brake();
                 }
-                 case "3" -> {
-                    driver.turnLeft();
+                case "3" -> {
+                    // driver.brake();
                 }
-                case "4" -> {
-                    driver.turnRight();
+                 case "4" -> {
+                    // driver.turnLeft();
                 }
                 case "5" -> {
-                    driver.goStraight();
+                    // driver.turnRight();
                 }
                 case "6" -> {
-                    driver.reverse();
+                    // driver.goStraight();
+                }
+                case "7" -> {
+                    // driver.goReverse();
+                }
+                case "8" -> {
+                    // TODO: Solve the changeGear logic, is icnconsistent with the up/down logic
+                    changeGear();
+                }
+                case "9" -> {
+                    // driver.reduceGearDriver();
                 }
                 default -> System.out.println("\nInvalid option. Please select one of the available options.");
             }
         } while (!isValid);
+
+    }
+
+    private void changeGear() {
+        try{
+            System.out.println("Gear (0 for neutral, 1-5 for forward gears, 6 for reverse): ");
+            String userInput = getUserInput();
+            Object[] newGear = inputTypeValidation(userInput, "short");
+
+            if(!(boolean) newGear[0]) {
+                throw new IllegalStateException("Invalid gear value. Please enter a number between 0 and 6.");
+            }
+
+
+            short gearValue = (short) newGear[1];
+            Object[] response = driver.changeGearDriver(gearValue);
+            if (!(Boolean) response[0]) {
+                throw new IllegalStateException((String) response[1]);
+            }
+            System.out.println("Gear changed to: " + gearValue + "\n");
+
+        } catch (IllegalStateException e) {
+            System.err.println("Something went wrong while trying to change gear: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid input. Please enter a valid gear number.");
+        }
+    }
+
+    private void accelerate() {
+
+        try{
+            Object[] response = driver.accelerateDriver();
+            if (!(Boolean) response[0]) {
+                throw new IllegalStateException((String) response[1]);
+            }
+            System.out.println("Speed is: " + response[1] + " km/h\n");
+
+        } catch (IllegalStateException e) {
+            System.err.println("Something went wrong while trying to accelerate: " + e.getMessage());
+        }
 
     }
 
