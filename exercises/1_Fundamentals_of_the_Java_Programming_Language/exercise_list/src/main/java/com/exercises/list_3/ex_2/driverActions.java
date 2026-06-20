@@ -2,6 +2,10 @@ package main.java.com.exercises.list_3.ex_2;
 
 public class driverActions extends carEngine{
 
+    protected Object[] driverCurrentStatus(){
+        return engineCurrentStatus();
+    }
+
     protected boolean startDriving() {
         try{
             if (!startEngine()) {return false;}
@@ -17,6 +21,7 @@ public class driverActions extends carEngine{
     protected boolean stopDriving() {
         try{
             if (!stopEngine()) {return false;}
+            System.out.println("You have stopped driving!\n");
             return true;
 
         } catch (IllegalStateException e) {
@@ -54,9 +59,9 @@ public class driverActions extends carEngine{
         }
     }
 
-    protected Object[] changeGearDriver(short newGear) {
+    protected Object[] changeGearDriver() {
         try{
-            Object[] engineResponse = changeGear(newGear);
+            Object[] engineResponse = changeGearCar();
             if (!(Boolean) engineResponse[0]) {
                 throw new IllegalStateException((String) engineResponse[1]);
             }

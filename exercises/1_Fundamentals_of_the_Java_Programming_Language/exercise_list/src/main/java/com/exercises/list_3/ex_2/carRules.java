@@ -20,13 +20,13 @@ public class carRules{
         return true;
     }
 
-    protected boolean stopEngineRules(boolean isEngineOn, short gear, short speed) {
+    protected boolean stopEngineRules(boolean isEngineOn, Gear gear, short speed) {
 
         if (!isEngineOn) {
             throw new IllegalStateException("Engine is already off. Please turn it on before stopping it.");
         }
 
-        if (gear != 0) {
+        if (gear != Gear.NEUTRAL) {
             throw new IllegalStateException("Gear must be in neutral (0) to stop the engine. Please shift to neutral before stopping the engine.");
         }
 
@@ -144,7 +144,7 @@ public class carRules{
 
             throw new IllegalStateException(
                 String.format(
-                    "Speed %d km/h is invalid for gear %s. You need to change gear to keep this action.",
+                    "Speed %d km/h is invalid for %s gear. You need to change gear to keep this action.",
                     speed,
                     newGear
                 )

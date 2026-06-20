@@ -5,6 +5,15 @@ import main.java.com.exercises.list_3.GeneralMethods;
 public class ex_10 extends GeneralMethods {
     driverActions driver = new driverActions();
 
+    private void showDrivingStatus(){
+        Object[] currentStatus = driver.driverCurrentStatus();
+        boolean isEngineOn = (boolean) currentStatus[0];
+        Gear gear = (Gear) currentStatus[1];
+        short speed = (short) currentStatus[2];
+
+        System.out.println("Current driving status: \n- Engine is " + (isEngineOn ? "on" : "off") + "\n- Gear: " + gear + "\n- Speed: " + speed + " km/h\n");
+    }
+
     private void startNewDrive() {
         try{
             boolean isDriving = driver.startDriving();
@@ -12,8 +21,9 @@ public class ex_10 extends GeneralMethods {
                 isDriving = false;
                 return;
             }
-            System.out.println("You have started driving!\n");
+            System.out.println("\nYou have started driving!");
 
+            showDrivingStatus();
             driverOptions();
 
         }catch (IllegalStateException e) {
@@ -26,37 +36,38 @@ public class ex_10 extends GeneralMethods {
         boolean isValid = false;
 
         do {
-            System.out.println("\nDriver Options: \n - 1. Accelerate. 2. Reduce speed. 3. Brake. \n - 4. Turn left. 5. Turn right. \n - 6. Go straight. 7. Reverse. \n - 8. Change gear. 9. Reduce gear.\n - 0. Exit.");
+            System.out.println("\nDriver Options: \n | 1. Accelerate. 2. Reduce speed. | 3. Turn left. 4. Turn right. \n | 5. Change gear. 6. Reduce gear. | 7. Brake. 8. Turn off the car.\n | 0. Exit.");
             String userInput = getUserInput();
             isExit(userInput);
 
             switch (userInput) {
+                case "0" -> {
+                    isValid = true;
+                }
                 case "1" -> {
                     accelerate();
                 }
                 case "2" -> {
-                    // driver.brake();
+                    // driver.reduceSpeed();
                 }
                 case "3" -> {
-                    // driver.brake();
-                }
-                 case "4" -> {
                     // driver.turnLeft();
                 }
-                case "5" -> {
+                 case "4" -> {
                     // driver.turnRight();
                 }
-                case "6" -> {
-                    // driver.goStraight();
-                }
-                case "7" -> {
-                    // driver.goReverse();
-                }
-                case "8" -> {
+                case "5" -> {
                     changeGear();
                 }
-                case "9" -> {
-                    // driver.reduceGearDriver();
+                case "6" -> {
+                    // driver.reduceGear();
+                }
+                case "7" -> {
+                    // driver.break();
+                }
+                case "8" -> {
+                    driver.stopDriving();
+                    showDrivingStatus();
                 }
                 default -> System.out.println("\nInvalid option. Please select one of the available options.");
             }
@@ -66,31 +77,21 @@ public class ex_10 extends GeneralMethods {
 
     private void changeGear() {
         try{
-            System.out.println("Gear (0 for neutral, 1-5 for forward gears, 6 for reverse): ");
-            String userInput = getUserInput();
-            Object[] newGear = inputTypeValidation(userInput, "short");
-
-            if(!(boolean) newGear[0]) {
-                throw new IllegalStateException("Invalid gear value. Please enter a number between 0 and 6.");
-            }
-
-
-            short gearValue = (short) newGear[1];
-            Object[] response = driver.changeGearDriver(gearValue);
+            Object[] response = driver.changeGearDriver();
+            Gear gearValue = (Gear) response[1];
             if (!(Boolean) response[0]) {
                 throw new IllegalStateException((String) response[1]);
             }
-            System.out.println("Gear changed to: " + gearValue + "\n");
+            System.out.println("Gear changed to: " + gearValue);
+
+            showDrivingStatus();// Logs the current driving status for user reference after changing gear.
 
         } catch (IllegalStateException e) {
             System.err.println("Something went wrong while trying to change gear: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.err.println("Invalid input. Please enter a valid gear number.");
         }
     }
 
     private void accelerate() {
-
         try{
             Object[] response = driver.accelerateDriver();
             if (!(Boolean) response[0]) {

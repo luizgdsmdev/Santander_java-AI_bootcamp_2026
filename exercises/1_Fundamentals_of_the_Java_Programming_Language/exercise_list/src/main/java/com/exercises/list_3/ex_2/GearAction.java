@@ -2,9 +2,9 @@ package main.java.com.exercises.list_3.ex_2;
 
 public enum GearAction {
 
-    SHIFT_UP(0),
-    SHIFT_DOWN(1),
-    MAINTAIN(2);
+    SHIFT_UP((short) 0),
+    SHIFT_DOWN((short) 1),
+    MAINTAIN((short) 2);
 
     private final short ActionValue;
 
@@ -23,5 +23,9 @@ public enum GearAction {
         throw new IllegalArgumentException(
             "Invalid action: " + ActionValue
         );
+    }
+
+    public short getValue() {
+        return ActionValue;
     }
 }

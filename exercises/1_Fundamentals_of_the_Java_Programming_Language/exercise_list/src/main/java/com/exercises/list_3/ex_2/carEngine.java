@@ -9,6 +9,7 @@ public class carEngine extends carRules{
     private short speed = 0;
     private boolean isStraight = false;
     private Gear currentGear = Gear.NEUTRAL;
+    private GearAction currentGearAction = GearAction.MAINTAIN;
 
 
     private boolean isEngineOn() {
@@ -79,17 +80,23 @@ public class carEngine extends carRules{
     }
 
     private Gear getGear() {
-        System.out.println("Getting gear: " + this.currentGear);
         return this.currentGear;
     }
 
     private void setGear(Gear gear) {
-        System.out.println("Setting gear: " + gear);
         this.currentGear = gear;
     }
 
 
     // Methods list
+
+    protected Object[] engineCurrentStatus(){
+        return new Object[]{
+            isEngineOn(),
+            getGear(),
+            getSpeed()
+        };
+    }
 
     /**
      * @Description: This method is responsible for starting the engine of the car. It checks if the engine is already on, if the gear is in neutral, and if the speed 
@@ -128,7 +135,7 @@ public class carEngine extends carRules{
             boolean isRulesMet = stopEngineRules(isEngineOn(), getGear(), getSpeed());
             if (isRulesMet) { 
                 setEngineOff();
-                setGear((short) 0);
+                setGear(Gear.NEUTRAL);
                 setSpeed((short) 0);
                 return true;
              }
@@ -179,12 +186,15 @@ public class carEngine extends carRules{
 
     }
 
-    protected Object[] changeGear(short newGear) {
+    protected Object[] changeGearCar() {
         try{
-            boolean isRulesMet = changeGearRules((short) getGear(), (short) getSpeed(), (short) 0, newGear);
+            short gearValue = (short) getGear().getValue();
+            short newGear = (short) ++gearValue;
+            
+            boolean isRulesMet = changeGearRules(getGear(), (short) getSpeed(), GearAction.SHIFT_UP, Gear.fromValue(newGear));
 
             if (isRulesMet) {
-                setGear(newGear);
+                setGear(Gear.fromValue((short) newGear));
                 return new Object[]{true, getGear()};
             }
 
@@ -196,7 +206,7 @@ public class carEngine extends carRules{
         }
     }
 
-        protected Object[] reduceGear(short newGear) {
+    protected Object[] reduceGear(short newGear) {
         try{
             boolean isRulesMet = changeGearRules((short) getGear(), (short) getSpeed(), (short) 1, newGear);
 
