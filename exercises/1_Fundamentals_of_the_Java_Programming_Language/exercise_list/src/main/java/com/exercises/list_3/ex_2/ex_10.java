@@ -53,7 +53,6 @@ public class ex_10 extends GeneralMethods {
                     // driver.goReverse();
                 }
                 case "8" -> {
-                    // TODO: Solve the changeGear logic, is icnconsistent with the up/down logic
                     changeGear();
                 }
                 case "9" -> {

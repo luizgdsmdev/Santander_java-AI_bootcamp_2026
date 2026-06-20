@@ -2,13 +2,14 @@ package main.java.com.exercises.list_3.ex_2;
 
 public class carRules{
 
-    protected boolean startEngineRules(boolean isEngineOn, short gear, short speed) {
+    protected boolean startEngineRules(boolean isEngineOn, Gear gear, short speed) {
+        System.out.println("Gear at gearRules: " + gear);
 
         if (isEngineOn) {
             throw new IllegalStateException("Engine is already on. Please turn it off before starting it again.");
         }
 
-        if (gear != 0) {
+        if (gear != Gear.NEUTRAL) {
             throw new IllegalStateException("Gear must be in neutral (0) to start the engine. Please shift to neutral before starting the engine.");
         }
 
@@ -36,64 +37,7 @@ public class carRules{
         return true;
     }
 
-    protected boolean changeGearRules(short gear, short speed, short action, short newGear) {
-        // Engine must be on, validated at accelerateSpeedRules before calling this method.
-        // Geers min = 0, max = 6
-        // Speed min = 0, max = 120
-
-        // Action: 0 = shift up, 1 = shift down, 2 = maintain gear
-        if((action == 0) && (gear + 1 != newGear)) {
-            throw new IllegalStateException("To shift up, you need to shift to the next gear. Please check the current gear and the new gear before shifting up.");
-        }
-
-        if((action == 1) && (gear - 1 != newGear)) {
-            throw new IllegalStateException("To shift down, you need to shift to the previous gear. Please check the current gear and the new gear before shifting down.");
-        }
-        
-        if (gear < 0 || gear > 6) {
-            throw new IllegalStateException("Gear must be between 0 and 6.");
-        }
-
-        if (speed < 0 || speed > 120) {
-            throw new IllegalStateException("Speed must be between 0 and 120.");
-        }
-
-        if (gear == 0 && speed != 0) {
-            throw new IllegalStateException("Cannot shift to neutral (0) while the car is moving. Please stop the car before shifting to neutral.");
-        }
-
-        if (gear == 6 && speed != 0) {
-            throw new IllegalStateException("Cannot shift to reverse (6) while the car is moving. Please stop the car before shifting to reverse.");
-        }
-
-        if(gear == 1 && speed > 24) {
-            throw new IllegalStateException("Cannot shift to gear 1 at speeds above 24. Please check speed before shifting to gear 1.");
-        }
-
-        if(gear == 2 && (speed > 48 || speed < 25)) {
-            throw new IllegalStateException("Cannot shift to gear 2 at speeds below to 24 and above 48. Please check speed before shifting to gear 2.");
-        }
-
-        if(gear == 3 && (speed > 72 || speed < 49)) {
-            throw new IllegalStateException("Cannot shift to gear 3 at speeds below to 48 and above 72. Please check speed before shifting to gear 3.");
-        }
-
-        if(gear == 4 && (speed > 96 || speed < 73)) {
-            throw new IllegalStateException("Cannot shift to gear 4 at speeds below to 72 and above 96. Please check speed before shifting to gear 4.");
-        }
-
-        if(gear == 5 && (speed > 120 || speed < 97)) {
-            throw new IllegalStateException("Cannot shift to gear 5 at speeds below to 96 and above 120. Please check speed before shifting to gear 5.");
-        }
-
-        if(gear == 6 && speed > 120) {
-            throw new IllegalStateException("Cannot shift to reverse (6) at speeds above 120. Please check speed before shifting to reverse.");
-        }
-
-        return true;
-    }
-
-    protected boolean accelerateSpeedRules(boolean isEngineOn, short speed, short gear) {
+    protected boolean accelerateSpeedRules(boolean isEngineOn, short speed, Gear currentGear, Gear newGear, GearAction action) {
         if (!isEngineOn) {
             throw new IllegalStateException("You need to start the engine before accelerating.");
         }
@@ -102,7 +46,7 @@ public class carRules{
             throw new IllegalStateException("You have reached the maximum speed limit. Cannot accelerate further.");
         }
 
-        boolean isRulesMet = changeGearRules(gear, (short) speed, (short) 2, (short) 0); // Using action of 2 (maintain gear) to skip the gear up/down validation, check only speed
+        boolean isRulesMet = changeGearRules(currentGear, (short) speed, action, newGear); // Using action of 2 (maintain gear) to skip the gear up/down validation, check only speed
         if (!isRulesMet) {
             throw new IllegalStateException("Cannot accelerate at the current speed and gear. Please check the speed and gear before accelerating.");
         }
@@ -118,6 +62,93 @@ public class carRules{
 
         if (speed <= 0) {
             throw new IllegalStateException("You have reached the minimum speed limit. Cannot reduce speed further.");
+        }
+
+        return true;
+    }
+
+    protected boolean changeGearRules(
+        Gear currentGear,
+        short speed,
+        GearAction action,
+        Gear newGear) {
+
+        if (speed < 0 || speed > 120) {
+            throw new IllegalStateException(
+                "Speed must be between 0 and 120 km/h."
+            );
+        }
+
+        // Maintain
+        if (action == GearAction.MAINTAIN) {
+
+            if (currentGear != newGear) {
+                throw new IllegalStateException(
+                    "Maintain action requires same gear."
+                );
+            }
+
+            return true;
+        }
+
+        // Validate gear transition
+        if (!currentGear.canShiftTo(newGear)) {
+            throw new IllegalStateException(
+                String.format(
+                    "Cannot shift from %s to %s.",
+                    currentGear,
+                    newGear
+                )
+            );
+        }
+
+        // Validate action
+        if (action == GearAction.SHIFT_UP &&
+                newGear.getValue() <= currentGear.getValue()) {
+
+            throw new IllegalStateException(
+                "Shift up requires a higher gear, you can only move 1 at a time."
+            );
+        }
+
+        if (action == GearAction.SHIFT_DOWN &&
+                newGear.getValue() >= currentGear.getValue()) {
+
+            throw new IllegalStateException(
+                "Shift down requires a lower gear, you can only move 1 at a time."
+            );
+        }
+
+        // Neutral and reverse can only be entered while stopped
+        if ((newGear == Gear.NEUTRAL ||
+                newGear == Gear.REVERSE) &&
+                speed != 0) {
+
+            throw new IllegalStateException(
+                "Vehicle must be stopped to engage neutral or reverse."
+            );
+        }
+
+        // Leaving neutral or reverse
+        if ((currentGear == Gear.NEUTRAL ||
+                currentGear == Gear.REVERSE) &&
+                speed != 0) {
+
+            throw new IllegalStateException(
+                "Vehicle must be stopped before leaving neutral or reverse."
+            );
+        }
+
+        // Validate speed for target gear
+        if (!newGear.isValidSpeed(speed)) {
+
+            throw new IllegalStateException(
+                String.format(
+                    "Speed %d km/h is invalid for gear %s. You need to change gear to keep this action.",
+                    speed,
+                    newGear
+                )
+            );
         }
 
         return true;

@@ -1,4 +1,5 @@
 package main.java.com.exercises.list_3.ex_2;
+
 public class carEngine extends carRules{
 
     private boolean isEngineOn = false;
@@ -6,9 +7,9 @@ public class carEngine extends carRules{
     private boolean isTurningLeft = false;
     private boolean isTurningRight = false;
     private short speed = 0;
-    private short gear = 0;
     private boolean isStraight = false;
-    private boolean reverse = false;
+    private Gear currentGear = Gear.NEUTRAL;
+
 
     private boolean isEngineOn() {
         return isEngineOn;
@@ -61,12 +62,12 @@ public class carEngine extends carRules{
     }
 
     private boolean isReverse() {
-        return this.isReverse;
+        return this.currentGear == Gear.REVERSE;
     }
     
     private void setReverse() {
         this.isStraight = false;
-        this.isReverse = true;
+        this.currentGear = Gear.REVERSE;
     }
 
     private short getSpeed() {
@@ -77,12 +78,14 @@ public class carEngine extends carRules{
         this.speed = speed;
     }
 
-    private short getGear() {
-        return this.gear;
+    private Gear getGear() {
+        System.out.println("Getting gear: " + this.currentGear);
+        return this.currentGear;
     }
 
-    private void setGear(short gear) {
-        this.gear = gear;
+    private void setGear(Gear gear) {
+        System.out.println("Setting gear: " + gear);
+        this.currentGear = gear;
     }
 
 
@@ -99,7 +102,7 @@ public class carEngine extends carRules{
         try{
             boolean isRulesMet = startEngineRules(isEngineOn(), getGear(), getSpeed());
             if (isRulesMet) { 
-                setGear((short) 0);
+                setGear(Gear.NEUTRAL);
                 setEngineOn();
                 setSpeed((short) 0);
                 return true;
